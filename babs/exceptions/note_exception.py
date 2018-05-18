@@ -1,0 +1,2 @@
+class NoteException(Exception):
+    pass
