@@ -1,3 +1,5 @@
+from __future__ import division
+
 import pytest
 
 from babs import Note
@@ -238,9 +240,9 @@ def test_repr():
 
 def test_value():
     n = Note(name='A')
-    assert n.value == 1/4.0
+    assert n.value == 1/4
 
-    n.value = 1/8.0
-    assert n.value == 1/8.0
+    n.value = 1/8
+    assert n.value == 1/8
 
-    assert Note(name='A', value=1/16.0).value == 1/16.0
+    assert Note(name='A', value=1/16).value == 1/16
