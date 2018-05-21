@@ -14,7 +14,7 @@ class Note(object):
     NOTES = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B']
     HALF_STEP_INTERVAL = 2 ** (1 / 12)
 
-    def __init__(self, freq=None, name=None, octave=4, alt=None, value=1/4):
+    def __init__(self, freq=None, name=None, octave=4, alt=None, value=1/4.0):
         """
         :param freq: frequency
         :param name: name of the note
