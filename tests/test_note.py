@@ -24,10 +24,8 @@ def test_create_with_invalid_note_name():
 
 
 def test_create_with_invalid_freq():
-    with pytest.raises(ValueError) as exc:
+    with pytest.raises(ValueError):
         Note(freq='string')
-
-    assert "could not convert string to float: 'string'" == str(exc.value)
 
 
 def test_create_with_name():
@@ -144,10 +142,8 @@ def test_change_freq():
     assert n.freq == 622.25
     assert n.octave == 5
 
-    with pytest.raises(ValueError) as exc:
+    with pytest.raises(ValueError):
         n.freq = 'string'
-
-    assert "could not convert string to float: 'string'" == str(exc.value)
 
 
 def test_pitch_shift():
@@ -211,20 +207,14 @@ def test_pitch_shift():
     assert n.freq == 220
     assert n.octave == 3
 
-    with pytest.raises(TypeError) as exc:
+    with pytest.raises(TypeError):
         Note(freq=440).pitch_shift(val='string')
 
-    assert "unsupported operand type(s) for +: 'int' and 'str'" == str(exc.value)
-
-    with pytest.raises(TypeError) as exc:
+    with pytest.raises(TypeError):
         Note(freq=440).pitch_shift(val='string', half_step=True)
 
-    assert "unsupported operand type(s) for ** or pow(): 'float' and 'str'" == str(exc.value)
-
-    with pytest.raises(TypeError) as exc:
+    with pytest.raises(TypeError):
         Note(freq=440).pitch_shift(val='string', octave=True)
-
-    assert "unsupported operand type(s) for ** or pow(): 'int' and 'str'" == str(exc.value)
 
 
 def test_str():

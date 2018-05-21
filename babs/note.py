@@ -1,9 +1,11 @@
+from __future__ import division
+
 import math
 
 from babs.exceptions import NoteException
 
 
-class Note:
+class Note(object):
     A_FREQUENCY = 440
     NOTES = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B']
     HALF_STEP_INTERVAL = 2 ** (1 / 12)

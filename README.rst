@@ -22,6 +22,8 @@ Overview
 +---------------------------+
 | Supported python Version  |
 +===========================+
+| 2.7                       |
++---------------------------+
 | 3.4                       |
 +---------------------------+
 | 3.5                       |
@@ -35,10 +37,6 @@ Installation
     git clone https://github.com/iskyd/babs
     
     cd babs
-    
-    python -m venv venv
-
-    source venv/bin/activate
     
     pip install -e .
 
