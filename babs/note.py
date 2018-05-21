@@ -8,13 +8,6 @@ from babs.exceptions import NoteException
 class Note(object):
     """
     Musical note
-
-    Attributes:
-        freq    frequency, the number of occurrences of a repeating event per unit of time
-        name    name of the note
-        octave  note's position on a standard 88-key piano keyboard
-        alt     note's alteration, could be sharp or flat. used to choose name (e.g D# or Eb)
-        value   relative duration of the note
     """
 
     A_FREQUENCY = 440
@@ -22,6 +15,13 @@ class Note(object):
     HALF_STEP_INTERVAL = 2 ** (1 / 12)
 
     def __init__(self, freq=None, name=None, octave=4, alt=None, value=1/4):
+        """
+        :param freq: frequency
+        :param name: name of the note
+        :param octave: note's position on a standard 88-key piano keyboard
+        :param alt: note's alteration, could be sharp or flat. used to choose name (e.g D# or Eb)
+        :param value: relative duration of the note
+        """
         self._freq = freq
         self._name = name
         self._octave = octave
