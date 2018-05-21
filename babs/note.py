@@ -6,6 +6,17 @@ from babs.exceptions import NoteException
 
 
 class Note(object):
+    """
+    Musical note
+
+    Attributes:
+        freq    frequency, the number of occurrences of a repeating event per unit of time
+        name    name of the note
+        octave  note's position on a standard 88-key piano keyboard
+        alt     note's alteration, could be sharp or flat. used to choose name (e.g D# or Eb)
+        value   relative duration of the note
+    """
+
     A_FREQUENCY = 440
     NOTES = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B']
     HALF_STEP_INTERVAL = 2 ** (1 / 12)
@@ -55,6 +66,9 @@ class Note(object):
         return "{}{}".format(self._name, self._octave)
 
     def _get_note_index(self):
+        """
+        :return: position of the note in self.NOTES or False if not found
+        """
         idx = 0
         for note in self.NOTES:
             names = note.split('/')
@@ -66,6 +80,9 @@ class Note(object):
         return False
 
     def _set_name_and_octave(self):
+        """
+        calculate and set _name and _octave based on freq and alt
+        """
         octave = 4
         distance = int(round(len(self.NOTES) * (math.log(float(self._freq), 2) - math.log(self.A_FREQUENCY, 2))))
         oct_summer = 1
@@ -87,6 +104,9 @@ class Note(object):
         self._octave = octave
 
     def _set_freq(self):
+        """
+        calculate and set freq based on name and octave
+        """
         note_distance = self._get_note_index() - self.NOTES.index('A')
         oct_distance = self._octave - 4
         distance = note_distance + (len(self.NOTES) * oct_distance)
@@ -120,6 +140,13 @@ class Note(object):
         self._set_name_and_octave()
 
     def pitch_shift(self, val, half_step=False, octave=False, alt=None):
+        """
+        change the freq and calculate name and octave
+        :param val: value to add or sub from freq
+        :param half_step: if True val is based as half tone
+        :param octave: if True val is based on octave
+        :param alt: note's alteration, could be sharp or flat. used to choose name (e.g D# or Eb)
+        """
         if self._alt is not None:
             self._alt = alt
         if half_step is True:
