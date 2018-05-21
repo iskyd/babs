@@ -234,3 +234,13 @@ def test_repr():
     assert n.freq == 466.16
     assert n.name == 'Bb'
     assert n.octave == 4
+
+
+def test_value():
+    n = Note(name='A')
+    assert n.value == 1/4
+
+    n.value = 1/8
+    assert n.value == 1/8
+
+    assert Note(name='A', value=1/16).value == 1/16

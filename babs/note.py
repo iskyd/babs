@@ -10,11 +10,12 @@ class Note(object):
     NOTES = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B']
     HALF_STEP_INTERVAL = 2 ** (1 / 12)
 
-    def __init__(self, freq=None, name=None, octave=4, alt=None):
+    def __init__(self, freq=None, name=None, octave=4, alt=None, value=1/4):
         self._freq = freq
         self._name = name
         self._octave = octave
         self._alt = alt
+        self.value = value
 
         if self._freq is None and self._name is None:
             raise NoteException("Can't create a note without frequency or name.")
