@@ -14,7 +14,7 @@ Overview
     * - tests
       - | |travis|
 
-.. |travis| image:: https://travis-ci.org/iskyd/babs.svg?branch=dev
+.. |travis| image:: https://travis-ci.org/iskyd/babs.svg?branch=master
     :alt: Travis-CI Build Status
     :target: https://travis-ci.org/iskyd/babs
 
