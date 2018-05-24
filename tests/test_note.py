@@ -240,7 +240,7 @@ def test_repr():
 
 def test_value():
     n = Note(name='A')
-    assert n.value == 1/4
+    assert n.value == 4/4
 
     n.value = 1/8
     assert n.value == 1/8
