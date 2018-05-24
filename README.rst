@@ -1,18 +1,24 @@
-========
+======================================
 Babs! Music Library
-========
+======================================
 
-========
+======================================
 Overview
-========
+======================================
 
 .. start-badges
 
 .. list-table::
     :stub-columns: 1
 
+    * - docs
+      - | docs |
     * - tests
       - | |travis|
+
+.. |docs| image:: https://readthedocs.org/projects/babs/badge/?style=flat
+    :target: https://readthedocs.org/projects/babs
+    :alt: Documentation Status
 
 .. |travis| image:: https://travis-ci.org/iskyd/babs.svg?branch=dev
     :alt: Travis-CI Build Status
@@ -33,7 +39,7 @@ Overview
 
 
 Installation
-============
+======================================
     git clone https://github.com/iskyd/babs
     
     cd babs
@@ -41,13 +47,13 @@ Installation
     pip install -e .
 
 Runinng Test
-============
+======================================
     pip install pytest
     
     pytest
 
 Code Coverage
-============
+======================================
     pip install pytest-cov
     
     pytest --cov=babs --cov-report=html

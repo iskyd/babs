@@ -16,3 +16,8 @@ build/
 .vscode/
 
 .idea/
+
+# Sphinx
+docs/_build
+docs/_static
+docs/_templates
