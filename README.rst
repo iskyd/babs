@@ -16,8 +16,8 @@ Overview
     * - tests
       - | |travis|
 
-.. |docs| image:: https://readthedocs.org/projects/babs/badge/?style=flat
-    :target: https://readthedocs.org/projects/babs
+.. |docs| image:: https://readthedocs.org/projects/babs/badge/?version=dev
+    :target: https://babs.readthedocs.io/en/latest/?badge=dev
     :alt: Documentation Status
 
 .. |travis| image:: https://travis-ci.org/iskyd/babs.svg?branch=dev
