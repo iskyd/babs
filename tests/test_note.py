@@ -160,6 +160,18 @@ def test_pitch_shift():
     assert n.freq == 493.88
     assert n.octave == 4
 
+    n = Note(freq=493.88)
+    n.pitch_shift(val=-53.88)
+    assert n.name == 'A'
+    assert n.freq == 440
+    assert n.octave == 4
+
+    n = Note(freq=440)
+    n.pitch_shift(val=0)
+    assert n.name == 'A'
+    assert n.freq == 440
+    assert n.octave == 4
+
     # Half step #
 
     n = Note(freq=440)
@@ -172,6 +184,12 @@ def test_pitch_shift():
     n.pitch_shift(val=-2, half_step=True)
     assert n.name == 'G'
     assert n.freq == 392.0
+    assert n.octave == 4
+
+    n = Note(freq=440)
+    n.pitch_shift(val=0, half_step=True)
+    assert n.name == 'A'
+    assert n.freq == 440
     assert n.octave == 4
 
     n = Note(freq=440, alt='flat')
@@ -205,6 +223,12 @@ def test_pitch_shift():
     assert n.name == 'A'
     assert n.freq == 220
     assert n.octave == 3
+
+    n = Note(freq=440)
+    n.pitch_shift(val=0, octave=True)
+    assert n.name == 'A'
+    assert n.freq == 440
+    assert n.octave == 4
 
     n = Note(freq=466.16)
     n.pitch_shift(val=1, octave=True, alt='flat')
