@@ -160,6 +160,8 @@ def test_pitch_shift():
     assert n.freq == 493.88
     assert n.octave == 4
 
+    # Half step #
+
     n = Note(freq=440)
     n.pitch_shift(val=2, half_step=True)
     assert n.name == 'B'
@@ -167,27 +169,9 @@ def test_pitch_shift():
     assert n.octave == 4
 
     n = Note(freq=440)
-    n.pitch_shift(val=1, octave=True)
-    assert n.name == 'A'
-    assert n.freq == 880
-    assert n.octave == 5
-
-    n = Note(freq=440)
-    n.pitch_shift(val=2, octave=True)
-    assert n.name == 'A'
-    assert n.freq == 1760
-    assert n.octave == 6
-
-    n = Note(freq=440)
-    n.pitch_shift(val=2, half_step=True, octave=True)
-    assert n.name == 'B'
-    assert n.freq == 493.88
-    assert n.octave == 4
-
-    n = Note(freq=440)
-    n.pitch_shift(val=1, half_step=True)
-    assert n.name == 'A#'
-    assert n.freq == 466.16
+    n.pitch_shift(val=-2, half_step=True)
+    assert n.name == 'G'
+    assert n.freq == 392.0
     assert n.octave == 4
 
     n = Note(freq=440, alt='flat')
@@ -196,23 +180,43 @@ def test_pitch_shift():
     assert n.freq == 466.16
     assert n.octave == 4
 
-    n = Note(freq=466.16, alt='sharp')
+    n = Note(freq=440, alt='sharp')
+    n.pitch_shift(val=1, half_step=True, alt='flat')
+    assert n.name == 'Bb'
+    assert n.freq == 466.16
+    assert n.octave == 4
+
+    n = Note(freq=466.16)
     n.pitch_shift(val=0, half_step=True, alt='flat')
     assert n.name == 'Bb'
     assert n.freq == 466.16
     assert n.octave == 4
 
-    n = Note(freq=466.16, alt='sharp')
-    n.pitch_shift(val=-1, half_step=True, octave=True)
+    # Octave #
+
+    n = Note(freq=440)
+    n.pitch_shift(val=1, octave=True)
     assert n.name == 'A'
-    assert n.freq == 440
-    assert n.octave == 4
+    assert n.freq == 880
+    assert n.octave == 5
 
     n = Note(freq=440)
     n.pitch_shift(val=-1, octave=True)
     assert n.name == 'A'
     assert n.freq == 220
     assert n.octave == 3
+
+    n = Note(freq=466.16)
+    n.pitch_shift(val=1, octave=True, alt='flat')
+    assert n.name == 'Bb'
+    assert n.freq == 932.32
+    assert n.octave == 5
+
+    n = Note(freq=466.16, alt='flat')
+    n.pitch_shift(val=1, octave=True, alt='sharp')
+    assert n.name == 'A#'
+    assert n.freq == 932.32
+    assert n.octave == 5
 
     with pytest.raises(TypeError):
         Note(freq=440).pitch_shift(val='string')

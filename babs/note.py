@@ -142,7 +142,7 @@ class Note(object):
         :param octave: if True val is based on octave
         :param alt: note's alteration, could be sharp or flat. used to choose name (e.g D# or Eb)
         """
-        if self._alt is not None:
+        if alt is not None:
             self._alt = alt
         if half_step is True:
             self._freq = round(self._freq * (self.HALF_STEP_INTERVAL ** val), 2)
