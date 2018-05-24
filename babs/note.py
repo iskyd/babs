@@ -11,6 +11,7 @@ class Note(object):
     """
 
     A_FREQUENCY = 440
+    A_DEFAULT_OCTAVE = 4
     NOTES = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B']
     HALF_STEP_INTERVAL = 2 ** (1 / 12)
 
@@ -83,19 +84,13 @@ class Note(object):
         """
         calculate and set _name and _octave based on freq and alt
         """
-        octave = 4
         distance = int(round(len(self.NOTES) * (math.log(float(self._freq), 2) - math.log(self.A_FREQUENCY, 2))))
-        oct_summer = 1
 
-        if distance < -self.NOTES.index('A'):
-            distance = -distance
-            oct_summer = -1
+        idx = self.NOTES.index('A') + distance
+        octave = int(self.A_DEFAULT_OCTAVE + (idx / len(self.NOTES)))
+        idx = idx % len(self.NOTES)
 
-        while distance + self.NOTES.index('A') - len(self.NOTES) >= 0:
-            octave += oct_summer
-            distance = distance - len(self.NOTES)
-
-        names = self.NOTES[self.NOTES.index('A') + int(distance)].split('/')
+        names = self.NOTES[idx].split('/')
         self._name = names[0]
 
         if len(names) > 1 and self._alt == 'flat':
