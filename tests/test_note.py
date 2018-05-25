@@ -78,6 +78,11 @@ def test_create_with_freq():
     assert n.freq == 466.16
     assert n.octave == 4
 
+    n = Note(freq=440, name='B', octave=2)
+    assert n.name == 'A'
+    assert n.freq == 440
+    assert n.octave == 4
+
 
 def test_compare():
     assert Note(freq=440) == Note(freq=440)
