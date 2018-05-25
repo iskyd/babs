@@ -7,7 +7,7 @@ from babs.exceptions import NoteException
 
 class Note(object):
     """
-    Musical note
+    Musical note: the pitch and the duration of a sound
     """
 
     A_FREQUENCY = 440
@@ -134,10 +134,10 @@ class Note(object):
         self._alt = alt
         self._set_name_and_octave()
 
-    def pitch_shift(self, val, half_step=False, octave=False, alt=None):
+    def pitch_shift(self, value, half_step=False, octave=False, alt=None):
         """
         change the freq and calculate name and octave
-        :param val: value to add or sub from freq
+        :param value: value to add or sub from freq
         :param half_step: if True val is based as half tone
         :param octave: if True val is based on octave
         :param alt: note's alteration, could be sharp or flat. used to choose name (e.g D# or Eb)
@@ -145,10 +145,10 @@ class Note(object):
         if alt is not None:
             self._alt = alt
         if half_step is True:
-            self._freq = round(self._freq * (self.HALF_STEP_INTERVAL ** val), 2)
+            self._freq = round(self._freq * (self.HALF_STEP_INTERVAL ** value), 2)
         elif octave is True:
-            self._freq = round(self._freq * (2 ** val), 2)
+            self._freq = round(self._freq * (2 ** value), 2)
         else:
-            self._freq = round(self._freq + val, 2)
+            self._freq = round(self._freq + value, 2)
 
         self._set_name_and_octave()

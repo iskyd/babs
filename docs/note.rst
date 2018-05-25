@@ -120,11 +120,11 @@ The pitch shift can be used in three different way.
 
     n = Note(freq=440)
 
-    n.pitch_shift(val=26.16) # Increase the freq by 26.16hz
+    n.pitch_shift(value=26.16) # Increase the freq by 26.16hz
     print(n.freq) # 466.16
     print(n.name) # 'A#'
 
-    n.pitch_shift(val=-26.16)
+    n.pitch_shift(value=-26.16) # Decrease the freq by 26.16hz
     print(n.freq) # 440.0
     print(n.name) # 'A'
 
@@ -134,12 +134,12 @@ The pitch shift can be used in three different way.
 
     n = Note(freq=440)
 
-    n.pitch_shift(val=2, octave=True) # Add 2 octaves
+    n.pitch_shift(value=2, octave=True) # Add 2 octaves
     print(n.freq) # 1760.0
     print(n.name) # 'A'
     print(n.octave) # 6
 
-    n.pitch_shift(val=-3, octave=True) # Sub 3 octaves
+    n.pitch_shift(value=-3, octave=True) # Sub 3 octaves
     print(n.freq) # 220.0
     print(n.name) # 'A'
     print(n.octave) # 3
@@ -150,12 +150,12 @@ The pitch shift can be used in three different way.
 
     n = Note(freq=440)
 
-    n.pitch_shift(val=2, half_step=True) # Add 1 tone (2 half tones)
+    n.pitch_shift(value=2, half_step=True) # Add 1 tone (2 half tones)
     print(n.freq) # 493.88
     print(n.name) # 'B'
     print(n.octave) # 4
 
-    n.pitch_shift(val=-12, half_step=True) # Sub 6 tones (6 tones = 1 octave)
+    n.pitch_shift(value=-12, half_step=True) # Sub 6 tones (6 tones = 1 octave)
     print(n.freq) # 246.94
     print(n.name) # 'B'
     print(n.octave) # 3
@@ -166,7 +166,7 @@ With half_step and octave you can specify the alteration you need as before
 
     n = Note(freq=440)
 
-    n.pitch_shift(val=1, half_step=True, alt='flat') # Add half tone
+    n.pitch_shift(value=1, half_step=True, alt='flat') # Add half tone
     print(n.freq) # 466.16
     print(n.name) # 'Bb'
     print(n.octave) # 4
@@ -177,7 +177,7 @@ Remember that 0 is a valid value so the following will works:
 
     n = Note(freq=466.16)
 
-    n.pitch_shift(val=0, alt='flat') # Add half tone
+    n.pitch_shift(value=0, alt='flat') # Add half tone
     print(n.freq) # 466.16
     print(n.name) # 'Bb'
     print(n.octave) # 4
