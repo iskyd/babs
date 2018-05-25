@@ -221,6 +221,9 @@ def test_pitch_shift():
     assert n.octave == 4
 
     with pytest.raises(TypeError):
+        Note(freq=440).pitch_shift()
+
+    with pytest.raises(TypeError):
         Note(freq=440).pitch_shift(value='string')
 
     with pytest.raises(TypeError):
