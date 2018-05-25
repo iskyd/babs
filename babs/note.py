@@ -66,48 +66,6 @@ class Note(object):
     def __str__(self):
         return "{}{}".format(self._name, self._octave)
 
-    def _get_note_index(self):
-        """
-        :return: position of the note in self.NOTES or False if not found
-        """
-        idx = 0
-        for note in self.NOTES:
-            names = note.split('/')
-            for name in names:
-                if self._name == name:
-                    return idx
-            idx += 1
-
-        return False
-
-    def _set_name_and_octave(self):
-        """
-        calculate and set _name and _octave based on freq and alt
-        """
-        distance = int(round(len(self.NOTES) * (math.log(float(self._freq), 2) - math.log(self.A_FREQUENCY, 2))))
-
-        idx = self.NOTES.index('A') + distance
-        octave = int(self.A_DEFAULT_OCTAVE + (idx / len(self.NOTES)))
-        idx = idx % len(self.NOTES)
-
-        names = self.NOTES[idx].split('/')
-        self._name = names[0]
-
-        if len(names) > 1 and self._alt == 'flat':
-            self._name = names[1]
-
-        self._octave = octave
-
-    def _set_freq(self):
-        """
-        calculate and set freq based on name and octave
-        """
-        note_distance = self._get_note_index() - self.NOTES.index('A')
-        oct_distance = self._octave - 4
-        distance = note_distance + (len(self.NOTES) * oct_distance)
-
-        self._freq = self.A_FREQUENCY * (self.HALF_STEP_INTERVAL ** distance)
-
     @property
     def freq(self):
         return self._freq
@@ -152,3 +110,45 @@ class Note(object):
             self._freq = round(self._freq + value, 2)
 
         self._set_name_and_octave()
+
+    def _get_note_index(self):
+        """
+        :return: position of the note in self.NOTES or False if not found
+        """
+        idx = 0
+        for note in self.NOTES:
+            names = note.split('/')
+            for name in names:
+                if self._name == name:
+                    return idx
+            idx += 1
+
+        return False
+
+    def _set_name_and_octave(self):
+        """
+        calculate and set _name and _octave based on freq and alt
+        """
+        distance = int(round(len(self.NOTES) * (math.log(float(self._freq), 2) - math.log(self.A_FREQUENCY, 2))))
+
+        idx = self.NOTES.index('A') + distance
+        octave = int(self.A_DEFAULT_OCTAVE + (idx / len(self.NOTES)))
+        idx = idx % len(self.NOTES)
+
+        names = self.NOTES[idx].split('/')
+        self._name = names[0]
+
+        if len(names) > 1 and self._alt == 'flat':
+            self._name = names[1]
+
+        self._octave = octave
+
+    def _set_freq(self):
+        """
+        calculate and set freq based on name and octave
+        """
+        note_distance = self._get_note_index() - self.NOTES.index('A')
+        oct_distance = self._octave - 4
+        distance = note_distance + (len(self.NOTES) * oct_distance)
+
+        self._freq = self.A_FREQUENCY * (self.HALF_STEP_INTERVAL ** distance)
