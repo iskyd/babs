@@ -41,7 +41,7 @@ You can also create a note starting from it name.
     print(n.octave) # 4
     print(n.value) # 1.0 (4/4)
 
-The freq params has the priority so if you specify the frequency the params name and octave will be ignored:
+The freq params have the priority so if you specify the frequency, name and octave will be ignored:
 
 .. code-block:: python
 
@@ -182,7 +182,7 @@ Remember that 0 is a valid value so the following will works:
     print(n.name) # 'Bb'
     print(n.octave) # 4
 
-Consider that we can obtain the same result in this *recommended* way without using the pitch shift function:
+Consider that we can obtain the same result in this **recommended** way without using the pitch shift function:
 
 .. code-block:: python
 
