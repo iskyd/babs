@@ -170,3 +170,25 @@ With half_step and octave you can specify the alteration you need as before
     print(n.freq) # 466.16
     print(n.name) # 'Bb'
     print(n.octave) # 4
+
+Remember that 0 is a valid value so the following will works:
+
+.. code-block:: python
+
+    n = Note(freq=466.16)
+
+    n.pitch_shift(val=0, alt='flat') # Add half tone
+    print(n.freq) # 466.16
+    print(n.name) # 'Bb'
+    print(n.octave) # 4
+
+Consider that we can obtain the same result in this *recommended* way without using the pitch shift function:
+
+.. code-block:: python
+
+    n = Note(freq=466.16)
+
+    n.alt = 'flat' # Add half tone
+    print(n.freq) # 466.16
+    print(n.name) # 'Bb'
+    print(n.octave) # 4
