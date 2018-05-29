@@ -11,3 +11,7 @@ class Rest:
         :param value: relative duration of the rest
         """
         self.value = value
+
+    def __repr__(self):
+        return "Rest(value={})".format(self.value)
+
