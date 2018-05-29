@@ -8,6 +8,7 @@ Contents:
 
     installation
     note
+    rest
     authors
 
 
