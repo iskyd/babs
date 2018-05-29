@@ -243,11 +243,13 @@ def test_repr():
     assert n.freq == 440
     assert n.name == 'A'
     assert n.octave == 4
+    assert n.value == 4/4
 
-    n = eval(Note(freq=932.32, alt='flat').__repr__())
+    n = eval(Note(freq=932.32, alt='flat', value=1/8).__repr__())
     assert n.freq == 932.32
     assert n.name == 'Bb'
     assert n.octave == 5
+    assert n.value == 1/8
 
 
 def test_value():

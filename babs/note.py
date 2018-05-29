@@ -61,7 +61,7 @@ class Note(object):
         return self._freq >= other.freq
 
     def __repr__(self):
-        return "Note(freq={}, alt='{}')".format(self._freq, self.alt)
+        return "Note(freq={}, alt='{}', value={})".format(self._freq, self.alt, self.value)
 
     def __str__(self):
         return "{}{}".format(self._name, self._octave)
