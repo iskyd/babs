@@ -60,11 +60,11 @@ class Note(object):
     def __ge__(self, other):
         return self._freq >= other.freq
 
-    def __repr__(self):
-        return "Note(freq={}, alt='{}', value={})".format(self._freq, self.alt, self.value)
-
     def __str__(self):
         return "{}{}".format(self._name, self._octave)
+
+    def __repr__(self):
+        return "Note(freq={}, alt='{}', value={})".format(self._freq, self.alt, self.value)
 
     @property
     def freq(self):
