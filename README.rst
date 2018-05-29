@@ -38,22 +38,6 @@ Overview
 +---------------------------+
 
 
-Installation
+Links
 ======================================
-    git clone https://github.com/iskyd/babs
-    
-    cd babs
-    
-    pip install -e .
-
-Runinng Test
-======================================
-    pip install pytest
-    
-    pytest
-
-Code Coverage
-======================================
-    pip install pytest-cov
-    
-    pytest --cov=babs --cov-report=html
+    * Documentation: https://babs.readthedocs.io/en/dev/
