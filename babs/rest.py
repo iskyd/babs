@@ -14,4 +14,3 @@ class Rest:
 
     def __repr__(self):
         return "Rest(value={})".format(self.value)
-
