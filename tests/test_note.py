@@ -235,6 +235,7 @@ def test_pitch_shift():
 
 def test_str():
     assert Note(freq=440).__str__() == 'A4'
+    assert Note(freq=932.32, alt='flat').__str__() == 'Bb5'
 
 
 def test_repr():
@@ -242,6 +243,11 @@ def test_repr():
     assert n.freq == 440
     assert n.name == 'A'
     assert n.octave == 4
+
+    n = eval(Note(freq=932.32, alt='flat').__repr__())
+    assert n.freq == 932.32
+    assert n.name == 'Bb'
+    assert n.octave == 5
 
 
 def test_value():
