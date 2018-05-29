@@ -192,3 +192,22 @@ Consider that we can obtain the same result in this **recommended** way without 
     print(n.freq) # 466.16
     print(n.name) # 'Bb'
     print(n.octave) # 4
+
+
+__str__ and __repr__
+--------------------------------
+
+__str__ will return the current name and octave of the note.
+
+.. code-block:: python
+
+    str(Note(freq=440)) # 'A4'
+
+__repr__ will return the current representation of the Note so that you can call eval() on it.
+
+.. code-block:: python
+
+    repr(Note(freq=440)) # 'Note(freq=440, alt='None', value=1.0)'
+
+    n = Note(freq=440, value=1/8) # repr(n) -> Note(freq=440, alt='None', value=0.125)
+    x = eval(repr(x)) # x will be the same as n
