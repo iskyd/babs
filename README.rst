@@ -15,6 +15,8 @@ Overview
       - |docs|
     * - tests
       - | |travis|
+    * - coverage
+      - | |coverage|
 
 .. |docs| image:: https://readthedocs.org/projects/babs/badge/?version=dev
     :target: https://babs.readthedocs.io/en/latest/?badge=dev
@@ -24,6 +26,8 @@ Overview
     :alt: Travis-CI Build Status
     :target: https://travis-ci.org/iskyd/babs
 
+.. |coverage| image:: https://codecov.io/gh/iskyd/babs/branch/dev/graph/badge.svg
+    :target: https://codecov.io/gh/iskyd/babs
 
 +---------------------------+
 | Supported python Version  |
