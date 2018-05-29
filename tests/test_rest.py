@@ -9,5 +9,5 @@ def test_create():
 
 
 def test_repr():
-    assert eval(Rest().__repr__()).value == 4 / 4
-    assert eval(Rest(value=3/4).__repr__()).value == 3/4
+    assert eval(repr(Rest())).value == 4 / 4
+    assert eval(repr(Rest(value=3/4))).value == 3/4
