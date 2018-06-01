@@ -19,7 +19,7 @@ Overview
       - | |coverage|
 
 .. |docs| image:: https://readthedocs.org/projects/babs/badge/?version=dev
-    :target: https://babs.readthedocs.io/en/latest/?badge=dev
+    :target: https://babs.readthedocs.io/en/dev/?badge=latest
     :alt: Documentation Status
 
 .. |travis| image:: https://travis-ci.org/iskyd/babs.svg?branch=dev
