@@ -9,6 +9,7 @@ Contents:
     installation
     note
     rest
+    chord
     authors
 
 

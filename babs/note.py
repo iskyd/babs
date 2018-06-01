@@ -60,6 +60,9 @@ class Note(object):
     def __ge__(self, other):
         return self._freq >= other.freq
 
+    def __hash__(self):
+        return hash(self._freq)
+
     def __str__(self):
         return "{}{}".format(self._name, self._octave)
 
