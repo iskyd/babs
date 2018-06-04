@@ -24,10 +24,6 @@ class Chord(object):
     def notes(self):
         return self._notes
 
-    @notes.setter
-    def notes(self, notes):
-        raise AttributeError("can't set attribute")
-
     def is_valid(self):
         if len(self._notes) < 2:
             return False
