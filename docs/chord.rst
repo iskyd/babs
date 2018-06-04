@@ -42,7 +42,7 @@ Now you have create the C chord and you can access to the notes attribute.
     # E4
     # C4
 
-So this come the first important thing, why the first note is a G4 and not a C4?
+So here come the first important thing, why the first note is a G4 and not a C4?
 Because notes is an unordered collections of unique elements (note) even if it is a list.
 So we can't add the same Note multiple times, let's take a try.
 
