@@ -254,8 +254,23 @@ Removing a Note by octave or name can remove multiple notes.
 
     # C5
 
+
 is valid
 --------------------------------
 
 If you need to know if the actual Chord is valid you can use is_valid method.
 A chord is valid if has two or more Note and if all notes are instance of Note()
+
+
+Comparison
+--------------------------------
+
+Chord support equal and not equal comparison operator. Two chords are the same if they have the same notes.
+The strict attribute doesn't affect the chord comparison.
+
+.. code-block:: python
+
+    Chord(Note(name='A'), Note(name='C')) == Chord(Note(name='A'), Note(name='C'))  # True
+    Chord(Note(name='A'), Note(name='C'), strict=True) == Chord(Note(name='A'), Note(name='C'), strict=False)  # True
+    Chord(Note(name='A'), Note(name='C')) == Chord(Note(name='A'), Note(name='C'), Note(name='E'))  # False
+    Chord(Note(name='A'), Note(name='C')) != Chord(Note(name='A'), Note(name='C'))  # False

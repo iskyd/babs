@@ -8,8 +8,8 @@ class Chord(object):
     """
 
     def __init__(self, *notes, **kwargs):
-        strict = kwargs.pop('strict', True)
-        if strict is True:
+        self.strict = kwargs.pop('strict', True)
+        if self.strict is True:
             if len(notes) < 2:
                 raise ChordException('Chords must have at least two notes, {} given.'.format(len(notes)))
 
@@ -19,6 +19,18 @@ class Chord(object):
                     raise ChordException(error)
 
         self._notes = list(set(notes))
+
+    def __eq__(self, other):
+        return set(self.notes) == set(other.notes)
+
+    def __ne__(self, other):
+        return set(self.notes) != set(other.notes)
+
+    def __str__(self):
+        return ','.join(list(map(lambda n: str(n), self.notes)))
+
+    def __repr__(self):
+        return 'Chord({}, strict={})'.format(','.join(list(map(lambda n: repr(n), self.notes))), self.strict)
 
     @property
     def notes(self):

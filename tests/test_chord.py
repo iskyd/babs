@@ -302,3 +302,61 @@ def test_remove_note_by_octave_not_strict():
     c.remove_note(octave=3, strict=False)
     assert len(c.notes) == 1
     assert Note(name='C', octave=5) in c.notes
+
+
+def test_eq():
+    assert \
+        Chord(Note(name='C'), Note(name='E'), Note(name='G')) == \
+        Chord(Note(name='C'), Note(name='E'), Note(name='G'))
+
+    assert \
+        Chord(Note(name='G'), Note(name='C'), Note(name='E')) == \
+        Chord(Note(name='C'), Note(name='E'), Note(name='G'))
+
+    assert not \
+        Chord(Note(name='G'), Note(name='C'), Note(name='E'), Note(name='C', octave=5)) == \
+        Chord(Note(name='C'), Note(name='E'), Note(name='G'))
+
+
+def test_neq():
+    assert \
+        Chord(Note(name='G'), Note(name='C'), Note(name='E'), Note(name='C', octave=5)) != \
+        Chord(Note(name='C'), Note(name='E'), Note(name='G'))
+
+    assert not \
+        Chord(Note(name='C'), Note(name='E'), Note(name='G')) != \
+        Chord(Note(name='C'), Note(name='E'), Note(name='G'))
+
+    assert not \
+        Chord(Note(name='G'), Note(name='E'), Note(name='C')) != \
+        Chord(Note(name='C'), Note(name='E'), Note(name='G'))
+
+
+def test_str():
+    c = Chord(Note(name='C'), Note(name='E'), Note(name='G'))
+    assert 'C4' in str(c).split(',')
+    assert 'E4' in str(c).split(',')
+    assert 'G4' in str(c).split(',')
+
+    c.add_note(note=Note(name='C', octave=5))
+    assert 'C4' in str(c).split(',')
+    assert 'E4' in str(c).split(',')
+    assert 'G4' in str(c).split(',')
+    assert 'C5' in str(c).split(',')
+
+
+def test_repr():
+    c = eval(repr(Chord(Note(name='C'), Note(name='E'), Note(name='G'))))
+    assert c == Chord(Note(name='C'), Note(name='E'), Note(name='G'))
+    assert c.strict is True
+
+    c = eval(repr(Chord(
+        Note(name='C'),
+        Note(name='E'),
+        Note(name='G'),
+        Note(name='C', octave=4),
+        strict=False
+    )))
+
+    assert c == Chord(Note(name='C'), Note(name='E'), Note(name='G'), Note(name='C', octave=4))
+    assert c.strict is False
