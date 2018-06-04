@@ -211,3 +211,33 @@ __repr__ will return the current representation of the Note so that you can call
 
     n = Note(freq=440, value=1/8) # repr(n) -> Note(freq=440, alt='None', value=0.125)
     x = eval(repr(x)) # x will be the same as n
+
+
+Comparison
+--------------------------------
+
+You can use all the comparison operator between two notes. The frequency is the attribute that is used in order to compare two notes.
+
+.. code-block:: python
+
+    Note(name='A') == Note(name='A')  # True - same as Note(name='A').freq == Note(name='A').freq
+    Note(name='A') < Note(name='C', octave=5)  # True
+
+
+List of supported operator:
+
++------------+
+| Operator   |
++============+
+| ==         |
++------------+
+| !=         |
++------------+
+| <          |
++------------+
+| <=         |
++------------+
+| >          |
++------------+
+| >=         |
++------------+
