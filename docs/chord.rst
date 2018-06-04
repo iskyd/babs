@@ -253,3 +253,9 @@ Removing a Note by octave or name can remove multiple notes.
         print(str(n))
 
     # C5
+
+is valid
+--------------------------------
+
+If you need to know if the actual Chord is valid you can use is_valid method.
+A chord is valid if has two or more Note and if all notes are instance of Note()
