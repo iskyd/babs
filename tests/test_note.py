@@ -84,28 +84,18 @@ def test_create_with_freq():
     assert n.octave == 4
 
 
-def test_compare():
+def test_eq():
     assert Note(freq=440) == Note(freq=440)
-    assert not Note(freq=440) == Note(freq=466.16)
+    assert not Note(freq=440) == Note(freq=440, value=1/8)
+    assert Note(freq=440, value=1/8) == Note(freq=440, value=1/8)
+    assert not Note(freq=440) == Note(freq=880)
 
+
+def test_neq():
     assert Note(freq=440) != Note(freq=880)
+    assert Note(freq=440) != Note(freq=440, value=1/8)
     assert not Note(freq=440) != Note(freq=440)
-
-    assert Note(freq=440) < Note(freq=880)
-    assert not Note(freq=440) < Note(freq=440)
-    assert not Note(freq=880) < Note(freq=440)
-
-    assert Note(freq=440) <= Note(freq=440)
-    assert Note(freq=440) <= Note(freq=880)
-    assert not Note(freq=880) <= Note(freq=440)
-
-    assert Note(freq=880) > Note(freq=440)
-    assert not Note(freq=440) > Note(freq=440)
-    assert not Note(freq=440) > Note(freq=880)
-
-    assert Note(freq=440) >= Note(freq=440)
-    assert Note(freq=880) >= Note(freq=440)
-    assert not Note(freq=440) >= Note(freq=880)
+    assert not Note(freq=440, value=1/8) != Note(freq=440, value=1/8)
 
 
 def test_change_alt():

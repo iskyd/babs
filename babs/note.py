@@ -43,22 +43,10 @@ class Note(object):
         self._freq = round(self._freq, 2)
     
     def __eq__(self, other):
-        return self._freq == other.freq
+        return self._freq == other.freq and self.value == other.value
 
     def __ne__(self, other):
-        return self._freq != other.freq
-
-    def __lt__(self, other):
-        return self._freq < other.freq
-
-    def __le__(self, other):
-        return self._freq <= other.freq
-
-    def __gt__(self, other):
-        return self._freq > other.freq
-
-    def __ge__(self, other):
-        return self._freq >= other.freq
+        return self._freq != other.freq or self.value != other.value
 
     def __hash__(self):
         return hash(self._freq)

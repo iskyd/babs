@@ -216,28 +216,11 @@ __repr__ will return the current representation of the Note so that you can call
 Comparison
 --------------------------------
 
-You can use all the comparison operator between two notes. The frequency is the attribute that is used in order to compare two notes.
+Note support equal and not equal comparison operator. Two notes are the same if they have the same frequency and the same value.
 
 .. code-block:: python
 
-    Note(name='A') == Note(name='A')  # True - same as Note(name='A').freq == Note(name='A').freq
-    Note(name='A') < Note(name='C', octave=5)  # True
-
-
-List of supported operator:
-
-+------------+
-| Operator   |
-+============+
-| ==         |
-+------------+
-| !=         |
-+------------+
-| <          |
-+------------+
-| <=         |
-+------------+
-| >          |
-+------------+
-| >=         |
-+------------+
+    Note(name='A') == Note(name='A')  # True
+    Note(name='A') == Note(name='A', value=1/8)  # False
+    Note(name='A') != Note(name='C')  # True
+    Note(name='A') != Note(name='A', value=1/8)  # True
