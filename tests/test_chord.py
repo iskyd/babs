@@ -303,6 +303,20 @@ def test_remove_note_by_octave_not_strict():
     assert Note(name='C', octave=5) in c.notes
 
 
+def test_remove_note_no_args():
+    with pytest.raises(ChordException) as exc:
+        Chord(Note(name='C'), Note(name='E'), Note(name='G')).remove_note()
+
+    assert "Invalid request. Note not found in Chord." == str(exc.value)
+
+    c = Chord(Note(name='C'), Note(name='E'), Note(name='G'))
+    c.remove_note(strict=False)
+    assert len(c.notes) == 3
+    assert Note(name='C') in c.notes
+    assert Note(name='E') in c.notes
+    assert Note(name='G') in c.notes
+
+
 def test_eq():
     assert \
         Chord(Note(name='C'), Note(name='E'), Note(name='G')) == \
