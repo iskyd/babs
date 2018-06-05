@@ -68,8 +68,7 @@ def test_is_valid():
     c = Chord(Note(name='C'), Note(name='E'))
     assert c.is_valid() is True
 
-    c.remove_note(name='C', strict=False)
-    assert c.is_valid() is False
+    assert Chord(Note(name='C'), strict=False).is_valid() is False
 
 
 def test_add_note():
