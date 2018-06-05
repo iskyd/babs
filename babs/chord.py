@@ -8,6 +8,10 @@ class Chord(object):
     """
 
     def __init__(self, *notes, **kwargs):
+        """
+        :param notes: list of notes
+        :param kwargs: options [strict]
+        """
         self.strict = kwargs.pop('strict', True)
         if self.strict is True:
             if len(notes) < 2:
@@ -37,6 +41,10 @@ class Chord(object):
         return self._notes
 
     def is_valid(self):
+        """
+        Check if chord is valid
+        :return: bool
+        """
         if len(self._notes) < 2:
             return False
 
@@ -47,6 +55,12 @@ class Chord(object):
         return True
 
     def add_note(self, note, strict=True):
+        """
+        Add note to chord
+        :param note: note to be added in chord
+        :param strict: raise ChordException if note is not valid
+        :return: None
+        """
         if strict is True:
             if not isinstance(note, Note):
                 error = 'Instance of Note expected, {} given.'.format(type(note).__name__)
@@ -56,12 +70,21 @@ class Chord(object):
             self._notes.append(note)
 
     def remove_note(self, note=None, freq=None, name=None, octave=None, strict=True):
+        """
+        Remove note by note, freq, name or octave from chord
+        :param note: note to remove
+        :param freq: frequency to remove
+        :param name: name to remove
+        :param octave: octave to remove
+        :param strict: raise ChordException if note is not valid, not found or if chord will be invalid
+        :return: None
+        """
         indices = []
         if note is not None:
             if strict is True and not isinstance(note, Note):
                 raise ChordException("Instance of Note expected, {} given.".format(type(note).__name__))
             indices = [key for key, n in enumerate(self._notes) if n == note]
-        if freq is not None:
+        elif freq is not None:
             indices = [key for key, n in enumerate(self._notes) if n.freq == freq]
         elif name is not None:
             indices = [key for key, n in enumerate(self._notes) if n.name == name]
