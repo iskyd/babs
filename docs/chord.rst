@@ -265,7 +265,7 @@ A chord is valid if has two or more Note and if all notes are instance of Note()
 Comparison
 --------------------------------
 
-Chord support equal and not equal comparison operator. Two chords are the same if they have the same notes.
+Chord support equal and not equal comparison operator. Two chords are the same if they have the same notes (check note comparison for more details).
 The strict attribute doesn't affect the chord comparison.
 
 .. code-block:: python
