@@ -365,11 +365,227 @@ def test_repr():
 
     c = eval(repr(Chord(
         Note(name='C'),
-        Note(name='E'),
-        Note(name='G'),
-        Note(name='C', octave=4),
         strict=False
     )))
 
-    assert c == Chord(Note(name='C'), Note(name='E'), Note(name='G'), Note(name='C', octave=4))
+    assert c == Chord(Note(name='C'), strict=False)
     assert c.strict is False
+
+
+def test_create_from_root():
+    c = Chord.create_from_root(root=Note(name='C'))
+
+    assert len(c.notes) == 3
+    assert Note(name='C') in c.notes
+    assert Note(name='E') in c.notes
+    assert Note(name='G') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='G'))
+
+    assert len(c.notes) == 3
+    assert Note(name='G') in c.notes
+    assert Note(name='B') in c.notes
+    assert Note(name='D') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='G', octave=3))
+
+    assert Note(name='G', octave=3) in c.notes
+    assert Note(name='B', octave=3) in c.notes
+    assert Note(name='D', octave=3) in c.notes
+
+
+def test_create_from_root_with_chord_type():
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MAJOR_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='E') in c.notes
+    assert Note(name='G') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MAJOR_SEVEN_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='E') in c.notes
+    assert Note(name='G') in c.notes
+    assert Note(name='B') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MINOR_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='Eb') in c.notes
+    assert Note(name='G') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MINOR_SEVEN_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='Eb') in c.notes
+    assert Note(name='G') in c.notes
+    assert Note(name='Bb') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.DOMINANT_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='E') in c.notes
+    assert Note(name='G') in c.notes
+    assert Note(name='Bb') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MINOR_MAJOR_SEVEN_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='Eb') in c.notes
+    assert Note(name='G') in c.notes
+    assert Note(name='B') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.HALF_DIMINISHED_SEVEN_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='Eb') in c.notes
+    assert Note(name='Gb') in c.notes
+    assert Note(name='Bb') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.DIMINISHED_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='Eb') in c.notes
+    assert Note(name='Gb') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.DIMINISHED_SEVEN_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='Eb') in c.notes
+    assert Note(name='Gb') in c.notes
+    assert Note(name='A') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.AUGMENTED_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='E') in c.notes
+    assert Note(name='G#') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.AUGMENTED_SEVEN_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='E') in c.notes
+    assert Note(name='G#') in c.notes
+    assert Note(name='Bb') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.AUGMENTED_MAJOR_SEVEN_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='E') in c.notes
+    assert Note(name='G#') in c.notes
+    assert Note(name='B') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MAJOR_SIXTH_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='E') in c.notes
+    assert Note(name='G') in c.notes
+    assert Note(name='A') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MINOR_SIXTH_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='Eb') in c.notes
+    assert Note(name='G') in c.notes
+    assert Note(name='A') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.SUS4_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='F') in c.notes
+    assert Note(name='G') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.SUS4_SEVEN_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='F') in c.notes
+    assert Note(name='G') in c.notes
+    assert Note(name='Bb') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.SUS4_MAJOR_SEVEN_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='F') in c.notes
+    assert Note(name='G') in c.notes
+    assert Note(name='B') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.SUS2_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='D') in c.notes
+    assert Note(name='G') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.SUS2_SEVEN_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='D') in c.notes
+    assert Note(name='G') in c.notes
+    assert Note(name='Bb') in c.notes
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.SUS2_MAJOR_SEVEN_TYPE)
+
+    assert Note(name='C') in c.notes
+    assert Note(name='D') in c.notes
+    assert Note(name='G') in c.notes
+    assert Note(name='B') in c.notes
+
+
+def test_create_from_root_with_alt():
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MINOR_TYPE)
+
+    assert c.notes[0].alt == 'sharp'  # G
+    assert str(c.notes[0]) == 'G4'
+    assert c.notes[2].alt == 'sharp'  # D#
+    assert str(c.notes[2]) == 'D#4'
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MINOR_TYPE, alt='flat')
+
+    assert c.notes[0].alt == 'flat'  # G
+    assert str(c.notes[0]) == 'G4'
+    assert c.notes[2].alt == 'flat'  # Eb
+    assert str(c.notes[2]) == 'Eb4'
+
+
+def test_create_from_root_with_from_root_octave():
+    c = Chord.create_from_root(root=Note(name='G', octave=3), octave='from_root')
+
+    assert Note(name='G', octave=3) in c.notes
+    assert Note(name='B', octave=3) in c.notes
+    assert Note(name='D', octave=4) in c.notes
+
+    c = Chord.create_from_root(root=Note(name='F', octave=4), octave='from_root')
+
+    assert Note(name='F', octave=4) in c.notes
+    assert Note(name='A', octave=4) in c.notes
+    assert Note(name='C', octave=5) in c.notes
+
+
+def test_create_from_root_with_int_octave():
+    c = Chord.create_from_root(root=Note(name='G', octave=3), octave=4)
+
+    assert Note(name='G', octave=3) in c.notes
+    assert Note(name='B', octave=4) in c.notes
+    assert Note(name='D', octave=4) in c.notes
+
+    c = Chord.create_from_root(root=Note(name='F', octave=4), octave=3)
+
+    assert Note(name='F', octave=4) in c.notes
+    assert Note(name='A', octave=3) in c.notes
+    assert Note(name='C', octave=3) in c.notes
+
+
+def test_create_from_root_with_callable_octave():
+    c = Chord.create_from_root(root=Note(name='G', octave=3), octave=lambda root_octave, i, distance: i + 1)
+
+    assert Note(name='G', octave=3) in c.notes
+    assert Note(name='B', octave=1) in c.notes
+    assert Note(name='D', octave=2) in c.notes
+
+    c = Chord.create_from_root(root=Note(name='F', octave=4), octave=lambda root_octave, i, distance: root_octave + i + 1)
+
+    assert Note(name='F', octave=4) in c.notes
+    assert Note(name='A', octave=5) in c.notes
+    assert Note(name='C', octave=6) in c.notes
+
+    with pytest.raises(TypeError):
+        Chord.create_from_root(root=Note(name='F', octave=4), octave=lambda: 'invalid')

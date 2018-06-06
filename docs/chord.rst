@@ -21,6 +21,10 @@ Chord
         If strict is True raise ChordException if Note is not found or
         if Chord has less then two notes after remove
 
+   .. py:classmethod:: create_from_root(root[, chord_type=None, octave='root', alt='sharp'])
+        Create and return a Chord from the root note
+
+
 
 Create your first chord
 --------------------------------
@@ -36,7 +40,7 @@ Now you have create the C chord and you can access to the notes attribute.
 .. code-block:: python
 
     for n in c.notes:
-        print(str(n))
+        print(n)
 
     # G4
     # E4
@@ -55,7 +59,7 @@ So we can't add the same Note multiple times, let's take a try.
     print(len(c.notes))  # 3
 
     for n in c.notes:
-        print(str(n))
+        print(n)
 
     # G4
     # E4
@@ -72,7 +76,7 @@ Remember that Note(name='C') is not equal to Note(name='C', octave=5)
     print(len(c.notes))  # 4
 
     for n in c.notes:
-        print(str(n))
+        print(n)
 
     # G4
     # E4
@@ -147,7 +151,7 @@ a chord is an unordered collections of unique elements so you can't add the same
     print(len(c.notes))  # 4
 
     for n in c.notes:
-        print(str(n))
+        print(n)
 
     # G4
     # E4
@@ -201,7 +205,7 @@ You can remove a note by Note(), name, frequency or octave.
     print(len(c.notes))  # 2
 
     for n in c.notes:
-        print(str(n))
+        print(n)
 
     # E4
     # C4
@@ -239,7 +243,7 @@ Removing a Note by octave or name can remove multiple notes.
     print(len(c.notes))  # 2
 
     for n in c.notes:
-        print(str(n))
+        print(n)
 
     # G4
     # E4
@@ -250,7 +254,7 @@ Removing a Note by octave or name can remove multiple notes.
     print(len(c.notes))  # 1
 
     for n in c.notes:
-        print(str(n))
+        print(n)
 
     # C5
 
@@ -270,7 +274,193 @@ The strict attribute doesn't affect the chord comparison.
 
 .. code-block:: python
 
+    from babs import Note, Chord
+
     Chord(Note(name='A'), Note(name='C')) == Chord(Note(name='A'), Note(name='C'))  # True
     Chord(Note(name='A'), Note(name='C'), strict=True) == Chord(Note(name='A'), Note(name='C'), strict=False)  # True
     Chord(Note(name='A'), Note(name='C')) == Chord(Note(name='A'), Note(name='C'), Note(name='E'))  # False
     Chord(Note(name='A'), Note(name='C')) != Chord(Note(name='A'), Note(name='C'))  # False
+
+
+Create from root Note
+--------------------------------
+
+You can easily create a Chord from root note using the create_from_root classmethod.
+Suppose you want create a C major chord.
+
+.. code-block:: python
+
+    from babs import Note, Chord
+
+    c = Chord.create_from_root(root=Note(name='C'))
+    for n in c.notes:
+        print(n)
+
+    # G4
+    # E4
+    # C4
+
+That's it, you've got a C major chord.
+So how it works? create_from_root use a chord_type, that is a list of notes distance from root note.
+By default chord_type is the MAJOR_TYPE that has a major 3d and the 5th.
+So the MAJOR_TYPE is simply a list [4, 7]. 4 is the distance between root from 3d and 7 between the root and the 5th.
+The distance is based on the Note.NOTES list: NOTES = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B']
+So let's say we want a major seven chord.
+
+.. code-block:: python
+
+    from babs import Note, Chord
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=[4, 7, 11])
+    for n in c.notes:
+        print(n)
+
+    # G4
+    # E4
+    # C4
+    # B4
+
+babs come with some of pre-defined chord_type so that the previous example could be the same as
+
+.. code-block:: python
+
+    from babs import Note, Chord
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MAJOR_SEVEN_TYPE)
+
+So you can use a custom list or use some of the pre-defined chord type.
+
+By default the octave of other notes will be the same as the root note. To change that behaviour
+you can use the octave param.
+**The root note will not be affected by the octave param.**
+octave could be :
+
+- an integer, so that every note will have that specific octave.
+
+.. code-block:: python
+
+    from babs import Note, Chord
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MAJOR_SEVEN_TYPE, octave=3)
+
+    for n in c.notes:
+        print(n)
+
+    # G3
+    # E3
+    # C4
+    # B3
+
+- a string 'root' or 'from_root':
+    - 'root', the default behaviour, use the root.octave.
+    - 'from_root' use the root.octave as the starting octave. So if you have a G chord, G-B-D, the starting octave is 4 so we have a G4, then we have a B4 and at least the D Note goes to the next octave so is a D5
+
+.. code-block:: python
+
+    from babs import Note, Chord
+
+    c = Chord.create_from_root(root=Note(name='G'), chord_type=Chord.MAJOR_TYPE, octave='from_root')
+
+    for n in c.notes:
+        print(n)
+
+    # G4
+    # D5
+    # B4
+
+- a callable, that must return an integer.
+  In the callable you have access to root_octave, i (the idx of list distance iteration, starting from 0) and the distance between the current note and the root note.
+  So suppose you want to have a Chord that looks like G4, B5, D6.
+
+.. code-block:: python
+
+    from babs import Note, Chord
+
+    c = Chord.create_from_root(
+            root=Note(name='G'),
+            chord_type=Chord.MAJOR_TYPE, octave=lambda root_octave, i, distance: root_octave + i + 1
+        )
+
+    for n in c.notes:
+        print(n)
+
+    # G4
+    # B5
+    # D6
+
+
+
+You can also specify the alteration of the notes using the alt param (by default is 'sharp') that works in the same way as for single note.
+
+.. code-block:: python
+
+    from babs import Note, Chord
+
+    c = Chord.create_from_root(root=Note(name='G'), chord_type=Chord.MAJOR_SEVEN_TYPE)
+
+    for n in c.notes:
+        print(n)
+
+    # G4
+    # F#4
+    # D4
+    # B4
+
+    c = Chord.create_from_root(root=Note(name='G'), chord_type=Chord.MAJOR_SEVEN_TYPE, alt='flat')
+
+    for n in c.notes:
+        print(n)
+
+    # G4
+    # Gb4
+    # D4
+    # B4
+
+
+List of pre-defined chord type
+--------------------------------
+
++----------------------------+
+| Chord type                 |
++============================+
+| MAJOR_TYPE                 |
++----------------------------+
+| MAJOR_SEVEN_TYPE           |
++----------------------------+
+| MINOR_TYPE                 |
++----------------------------+
+| MINOR_SEVEN_TYPE           |
++----------------------------+
+| DOMINANT_TYPE              |
++----------------------------+
+| MINOR_MAJOR_SEVEN_TYPE     |
++----------------------------+
+| HALF_DIMINISHED_SEVEN_TYPE |
++----------------------------+
+| DIMINISHED_TYPE            |
++----------------------------+
+| DIMINISHED_SEVEN_TYPE      |
++----------------------------+
+| AUGMENTED_TYPE             |
++----------------------------+
+| AUGMENTED_SEVEN_TYPE       |
++----------------------------+
+| AUGMENTED_MAJOR_SEVEN_TYPE |
++----------------------------+
+| MAJOR_SIXTH_TYPE           |
++----------------------------+
+| MINOR_SIXTH_TYPE           |
++----------------------------+
+| SUS4_TYPE                  |
++----------------------------+
+| SUS4_SEVEN_TYPE            |
++----------------------------+
+| SUS4_MAJOR_SEVEN_TYPE      |
++----------------------------+
+| SUS2_TYPE                  |
++----------------------------+
+| SUS2_SEVEN_TYPE            |
++----------------------------+
+| SUS2_MAJOR_SEVEN_TYPE      |
++----------------------------+
+
