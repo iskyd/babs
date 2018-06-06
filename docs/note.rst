@@ -5,10 +5,18 @@ Note
 
     Return a musical Note representation from frequency or name
 
-   .. py:method:: pitch_shift(val[, half_step=False, octave=False, alt=None])
+    .. py:method:: pitch_shift(val[, half_step=False, octave=False, alt=None])
 
         change the frequency of the current note
 
+    .. py:method:: get_note_index()
+
+        return the note index in Note.NOTES or False if not found
+
+    .. py:classmethod:: get_note_name_by_index(idx[, alt=None])
+
+        return the name of the note at specified idx in Note.NOTES.
+        idx could be any number so that you don't have to worry about idx > len(Note.NOTES)
 
 Create your first note
 --------------------------------
@@ -224,3 +232,5 @@ Note support equal and not equal comparison operator. Two notes are the same if 
     Note(name='A') == Note(name='A', value=1/8)  # False
     Note(name='A') != Note(name='C')  # True
     Note(name='A') != Note(name='A', value=1/8)  # True
+
+
