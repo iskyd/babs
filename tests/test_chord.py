@@ -531,19 +531,19 @@ def test_create_from_root_with_chord_type():
 
 
 def test_create_from_root_with_alt():
-    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MINOR_TYPE)
+    c = Chord.create_from_root(root=Note(name='C', alt='sharp'), chord_type=Chord.MINOR_TYPE)
 
-    assert c.notes[0].alt == 'sharp'  # G
-    assert str(c.notes[0]) == 'G4'
-    assert c.notes[2].alt == 'sharp'  # D#
-    assert str(c.notes[2]) == 'D#4'
+    for n in c.notes:
+        assert n.alt == 'sharp'
+        if n == Note(name='D#'):
+            assert str(n) == 'D#4'
 
-    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MINOR_TYPE, alt='flat')
+    c = Chord.create_from_root(root=Note(name='C', alt='flat'), chord_type=Chord.MINOR_TYPE, alt='flat')
 
-    assert c.notes[0].alt == 'flat'  # G
-    assert str(c.notes[0]) == 'G4'
-    assert c.notes[2].alt == 'flat'  # Eb
-    assert str(c.notes[2]) == 'Eb4'
+    for n in c.notes:
+        assert n.alt == 'flat'
+        if n == Note(name='Eb'):
+            assert str(n) == 'Eb4'
 
 
 def test_create_from_root_with_from_root_octave():
