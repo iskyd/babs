@@ -32,7 +32,7 @@ class Note(object):
         if self._freq is None and self._name is None:
             raise NoteException("Can't create a note without frequency or name.")
 
-        if self._name is not None and self._get_note_index() is False:
+        if self._name is not None and self.get_note_index() is False:
             raise NoteException("Invalid note.")
 
         if self._freq is None:
@@ -102,7 +102,7 @@ class Note(object):
 
         self._set_name_and_octave()
 
-    def _get_note_index(self):
+    def get_note_index(self):
         """
         :return: position of the note in self.NOTES or False if not found
         """
@@ -126,20 +126,27 @@ class Note(object):
         octave = int(self.A_DEFAULT_OCTAVE + (idx / len(self.NOTES)))
         idx = idx % len(self.NOTES)
 
-        names = self.NOTES[idx].split('/')
-        self._name = names[0]
-
-        if len(names) > 1 and self._alt == 'flat':
-            self._name = names[1]
-
+        self._name = self.get_note_name_by_index(idx, self._alt)
         self._octave = octave
 
     def _set_freq(self):
         """
         calculate and set freq based on name and octave
         """
-        note_distance = self._get_note_index() - self.NOTES.index('A')
+        note_distance = self.get_note_index() - self.NOTES.index('A')
         oct_distance = self._octave - 4
         distance = note_distance + (len(self.NOTES) * oct_distance)
 
         self._freq = self.A_FREQUENCY * (self.HALF_STEP_INTERVAL ** distance)
+
+    @classmethod
+    def get_note_name_by_index(cls, idx, alt=None):
+        while idx >= len(cls.NOTES):
+            idx = idx - len(cls.NOTES)
+
+        names = cls.NOTES[idx].split('/')
+
+        if len(names) > 1 and alt == 'flat':
+            return names[1]
+
+        return names[0]

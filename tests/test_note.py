@@ -250,3 +250,11 @@ def test_value():
     assert n.value == 1/8
 
     assert Note(name='A', value=1/16).value == 1/16
+
+
+def test_get_note_name_by_index():
+    assert Note.get_note_name_by_index(0) == 'C'
+    assert Note.get_note_name_by_index(1) == 'C#'
+    assert Note.get_note_name_by_index(1, alt='flat') == 'Db'
+    assert Note.get_note_name_by_index(12) == 'C'
+    assert Note.get_note_name_by_index(26) == 'D'
