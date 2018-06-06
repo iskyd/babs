@@ -388,7 +388,7 @@ octave could be :
     # B5
     # D6
 
-
+If the octave is invalid, for example a string different from 'root' and 'from_root' or a float number, it will be set to 4.
 
 You can also specify the alteration of the notes using the alt param (by default is 'sharp') that works in the same way as for single note.
 

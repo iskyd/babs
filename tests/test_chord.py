@@ -589,3 +589,11 @@ def test_create_from_root_with_callable_octave():
 
     with pytest.raises(TypeError):
         Chord.create_from_root(root=Note(name='F', octave=4), octave=lambda: 'invalid')
+
+
+def test_create_from_root_with_invalid_octave():
+    c = Chord.create_from_root(root=Note(name='C'), octave='invalid')
+
+    assert Note(name='C', octave=4) in c.notes
+    assert Note(name='E', octave=4) in c.notes
+    assert Note(name='G', octave=4) in c.notes
