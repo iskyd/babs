@@ -38,11 +38,6 @@ class Chord(object):
             if len(notes) < 2:
                 raise ChordException('Chords must have at least two notes, {} given.'.format(len(notes)))
 
-            for n in notes:
-                if not isinstance(n, Note):
-                    error = 'Invalid Chord, instance of note expected but {} given.'.format(type(n).__name__)
-                    raise ChordException(error)
-
         self._notes = list(set(notes))
 
     def __eq__(self, other):
@@ -75,17 +70,13 @@ class Chord(object):
 
         return True
 
-    def add_note(self, note, strict=True):
+    def add_note(self, note):
         """
         Add note to chord
         :param note: note to be added in chord
         :param strict: raise ChordException if note is not valid
         :return: None
         """
-        if strict is True:
-            if not isinstance(note, Note):
-                error = 'Instance of Note expected, {} given.'.format(type(note).__name__)
-                raise ChordException(error)
 
         if note not in self._notes:
             self._notes.append(note)
@@ -102,8 +93,6 @@ class Chord(object):
         """
         indices = []
         if note is not None:
-            if strict is True and not isinstance(note, Note):
-                raise ChordException("Instance of Note expected, {} given.".format(type(note).__name__))
             indices = [key for key, n in enumerate(self._notes) if n == note]
         elif freq is not None:
             indices = [key for key, n in enumerate(self._notes) if n.freq == freq]

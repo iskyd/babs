@@ -34,11 +34,6 @@ def test_create():
 
     assert "Chords must have at least two notes, 1 given." == str(exc.value)
 
-    with pytest.raises(ChordException) as exc:
-        Chord('a', 'b')
-
-    assert "Invalid Chord, instance of note expected but str given." == str(exc.value)
-
 
 def test_create_not_strict():
     assert len(Chord(strict=False).notes) == 0
@@ -84,22 +79,6 @@ def test_add_note():
     assert len(c.notes) == 5
     assert Note(name='C', octave=5) in c.notes
 
-    with pytest.raises(ChordException) as exc:
-        Chord('a', 'b', strict=False).add_note('c')
-
-    assert "Instance of Note expected, str given." == str(exc.value)
-
-
-def test_add_note_not_strict():
-    c = Chord('a', 'b', strict=False)
-    c.add_note('c', strict=False)
-
-    assert len(c.notes) == 3
-
-    c.add_note('d', strict=False)
-
-    assert len(c.notes) == 4
-
 
 def test_remove_note_by_note():
     c = Chord(Note(name='C'), Note(name='E'), Note(name='G'), Note(name='C', octave=5))
@@ -133,13 +112,8 @@ def test_remove_note_by_note():
     assert Note(name='C') in c.notes
     assert "Invalid request. Chords must have at least two notes." == str(exc.value)
 
-    with pytest.raises(ChordException) as exc:
-        c.remove_note(note='a')
-
-    assert "Instance of Note expected, str given." == str(exc.value)
-
     with pytest.raises(AttributeError) as exc:
-        Chord('a', 'b', strict=False).remove_note(note=Note(name='A'))
+        c.remove_note(note='a')
 
     assert "'str' object has no attribute 'freq'" == str(exc.value)
 
