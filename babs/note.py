@@ -15,19 +15,19 @@ class Note(object):
     NOTES = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B']
     HALF_STEP_INTERVAL = 2 ** (1 / 12)
 
-    def __init__(self, freq=None, name=None, octave=4, alt=None, value=4/4):
+    def __init__(self, freq=None, name=None, octave=4, alt=None, duration=4/4):
         """
         :param freq: frequency
         :param name: name of the note
         :param octave: note's position on a standard 88-key piano keyboard
         :param alt: note's alteration, could be sharp or flat. used to choose name (e.g D# or Eb)
-        :param value: relative duration of the note
+        :param duration: relative duration of the note
         """
         self._freq = freq
         self._name = name
         self._octave = octave
         self._alt = alt
-        self.value = value
+        self.duration = duration
 
         if self._freq is None and self._name is None:
             raise NoteException("Can't create a note without frequency or name.")
@@ -43,10 +43,10 @@ class Note(object):
         self._freq = round(self._freq, 2)
     
     def __eq__(self, other):
-        return self._freq == other.freq and self.value == other.value
+        return self._freq == other.freq and self.duration == other.duration
 
     def __ne__(self, other):
-        return self._freq != other.freq or self.value != other.value
+        return self._freq != other.freq or self.duration != other.duration
 
     def __hash__(self):
         return hash(self._freq)
@@ -55,7 +55,7 @@ class Note(object):
         return "{}{}".format(self._name, self._octave)
 
     def __repr__(self):
-        return "Note(freq={}, alt='{}', value={})".format(self._freq, self.alt, self.value)
+        return "Note(freq={}, alt='{}', duration={})".format(self._freq, self.alt, self.duration)
 
     @property
     def freq(self):

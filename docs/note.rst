@@ -1,7 +1,7 @@
 Note
 ================================
 
-.. py:class:: Note(freq, name, octave=4, alt='sharp', value=4/4)
+.. py:class:: Note(freq, name, octave=4, alt='sharp', duration=4/4)
 
     Return a musical Note representation from frequency or name
 
@@ -36,7 +36,7 @@ So you now have access to attribute's note.
     print(n.freq)  # 440
     print(n.name)  # 'A'
     print(n.octave)  # 4
-    print(n.value)  # 1.0 (4/4)
+    print(n.duration)  # 1.0 (4/4)
 
 You can also create a note starting from it name.
 
@@ -47,7 +47,7 @@ You can also create a note starting from it name.
     print(n.freq)  # 440
     print(n.name)  # 'A'
     print(n.octave)  # 4
-    print(n.value)  # 1.0 (4/4)
+    print(n.duration)  # 1.0 (4/4)
 
 The freq params have the priority so if you specify the frequency, name and octave will be ignored:
 
@@ -72,7 +72,7 @@ The octave is note's position on a standard 88-key piano keyboard and by default
     print(n.freq)  # 880.0
     print(n.name)  # 'A'
     print(n.octave)  # 5
-    print(n.value)  # 1.0 (4/4)
+    print(n.duration)  # 1.0 (4/4)
 
 
 Alteration
@@ -92,6 +92,25 @@ So we got A# as name because the A# and the Bb note has the same frequency. But 
     n = Note(freq=466.16, alt='flat')
 
     print(n.name)  # 'Bb'
+
+
+Duration
+--------------------------------
+The duration represent the relative duration of the note.
+
+.. code-block:: python
+
+    n = Note(name='A', duration=3/4)
+
+    print(n.duration)  # 0.75 -> 3/4
+
+You can change the duration of the note simply using the setter.
+
+.. code-block:: python
+
+    print(n.duration)  # 0.75 -> 3/4
+    n.duration = 2/4
+    print(n.duration)  # 0.5 -> 3/4
 
 
 Change attribute
@@ -185,7 +204,7 @@ Remember that 0 is a valid value so the following will works:
 
     n = Note(freq=466.16)
 
-    n.pitch_shift(value=0, alt='flat') # Add half tone
+    n.pitch_shift(value=0, alt='flat')  # Add half tone
     print(n.freq)  # 466.16
     print(n.name)  # 'Bb'
     print(n.octave)  # 4
@@ -215,22 +234,22 @@ __repr__ will return the current representation of the Note so that you can call
 
 .. code-block:: python
 
-    repr(Note(freq=440))  # 'Note(freq=440, alt='None', value=1.0)'
+    repr(Note(freq=440))  # 'Note(freq=440, alt='None', duration=1.0)'
 
-    n = Note(freq=440, value=1/8)  # repr(n) -> Note(freq=440, alt='None', value=0.125)
+    n = Note(freq=440, duration=1/8)  # repr(n) -> Note(freq=440, alt='None', duration=0.125)
     x = eval(repr(x))  # x will be the same as n
 
 
 Comparison
 --------------------------------
 
-Note support equal and not equal comparison operator. Two notes are the same if they have the same frequency and the same value.
+Note support equal and not equal comparison operator. Two notes are the same if they have the same frequency and the same duration.
 
 .. code-block:: python
 
     Note(name='A') == Note(name='A')  # True
-    Note(name='A') == Note(name='A', value=1/8)  # False
+    Note(name='A') == Note(name='A', duration=1/8)  # False
     Note(name='A') != Note(name='C')  # True
-    Note(name='A') != Note(name='A', value=1/8)  # True
+    Note(name='A') != Note(name='A', duration=1/8)  # True
 
 

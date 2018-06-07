@@ -86,16 +86,16 @@ def test_create_with_freq():
 
 def test_eq():
     assert Note(freq=440) == Note(freq=440)
-    assert not Note(freq=440) == Note(freq=440, value=1/8)
-    assert Note(freq=440, value=1/8) == Note(freq=440, value=1/8)
+    assert not Note(freq=440) == Note(freq=440, duration=1/8)
+    assert Note(freq=440, duration=1/8) == Note(freq=440, duration=1/8)
     assert not Note(freq=440) == Note(freq=880)
 
 
 def test_neq():
     assert Note(freq=440) != Note(freq=880)
-    assert Note(freq=440) != Note(freq=440, value=1/8)
+    assert Note(freq=440) != Note(freq=440, duration=1/8)
     assert not Note(freq=440) != Note(freq=440)
-    assert not Note(freq=440, value=1/8) != Note(freq=440, value=1/8)
+    assert not Note(freq=440, duration=1/8) != Note(freq=440, duration=1/8)
 
 
 def test_change_alt():
@@ -233,23 +233,23 @@ def test_repr():
     assert n.freq == 440
     assert n.name == 'A'
     assert n.octave == 4
-    assert n.value == 4/4
+    assert n.duration == 4/4
 
-    n = eval(repr(Note(freq=932.32, alt='flat', value=1/8)))
+    n = eval(repr(Note(freq=932.32, alt='flat', duration=1/8)))
     assert n.freq == 932.32
     assert n.name == 'Bb'
     assert n.octave == 5
-    assert n.value == 1/8
+    assert n.duration == 1/8
 
 
 def test_value():
     n = Note(name='A')
-    assert n.value == 4/4
+    assert n.duration == 4/4
 
-    n.value = 1/8
-    assert n.value == 1/8
+    n.duration = 1/8
+    assert n.duration == 1/8
 
-    assert Note(name='A', value=1/16).value == 1/16
+    assert Note(name='A', duration=1/16).duration == 1/16
 
 
 def test_get_note_name_by_index():

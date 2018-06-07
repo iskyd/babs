@@ -6,29 +6,29 @@ class Rest:
     Interval of silence
     """
 
-    def __init__(self, value=4/4):
+    def __init__(self, duration=4/4):
         """
-        :param value: relative duration of the rest
+        :param duration: relative duration of the rest
         """
-        self.value = value
+        self.duration = duration
 
     def __eq__(self, other):
-        return self.value == other.value
+        return self.duration == other.duration
 
     def __ne__(self, other):
-        return self.value != other.value
+        return self.duration != other.duration
 
     def __lt__(self, other):
-        return self.value < other.value
+        return self.duration < other.duration
 
     def __le__(self, other):
-        return self.value <= other.value
+        return self.duration <= other.duration
 
     def __gt__(self, other):
-        return self.value > other.value
+        return self.duration > other.duration
 
     def __ge__(self, other):
-        return self.value >= other.value
+        return self.duration >= other.duration
 
     def __repr__(self):
-        return "Rest(value={})".format(self.value)
+        return "Rest(duration={})".format(self.duration)
