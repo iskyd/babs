@@ -14,6 +14,8 @@ class Note(object):
     A_DEFAULT_OCTAVE = 4
     NOTES = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B']
     HALF_STEP_INTERVAL = 2 ** (1 / 12)
+    FLAT = 'flat'
+    SHARP = 'sharp'
 
     def __init__(self, freq=None, name=None, octave=4, alt=None, duration=4/4):
         """
@@ -33,7 +35,7 @@ class Note(object):
             raise NoteException("Can't create a note without frequency or name.")
 
         if self._name is not None and self.get_note_index() is False:
-            raise NoteException("Invalid note.")
+            raise NoteException('Invalid note.')
 
         if self._freq is None:
             self._set_freq()

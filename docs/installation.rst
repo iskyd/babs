@@ -31,6 +31,12 @@ Test
     pip install pytest
     pytest
 
+Run single test
+
+.. code-block:: bash
+
+    pytest tests/[test_file.py]
+
 
 Coverage
 --------------------------------

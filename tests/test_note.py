@@ -17,12 +17,12 @@ def test_create_with_invalid_note_name():
     with pytest.raises(NoteException) as exc:
         Note(name='S')
 
-    assert "Invalid note." == str(exc.value)
+    assert 'Invalid note.' == str(exc.value)
 
     with pytest.raises(NoteException) as exc:
         Note(name=3)
 
-    assert "Invalid note." == str(exc.value)
+    assert 'Invalid note.' == str(exc.value)
 
 
 def test_create_with_invalid_freq():
@@ -68,12 +68,12 @@ def test_create_with_freq():
     assert n.freq == 466.16
     assert n.octave == 4
 
-    n = Note(freq=466.16, alt='flat')
+    n = Note(freq=466.16, alt=Note.FLAT)
     assert n.name == 'Bb'
     assert n.freq == 466.16
     assert n.octave == 4
 
-    n = Note(freq=466.16, alt='sharp')
+    n = Note(freq=466.16, alt=Note.SHARP)
     assert n.name == 'A#'
     assert n.freq == 466.16
     assert n.octave == 4
@@ -99,13 +99,13 @@ def test_neq():
 
 
 def test_change_alt():
-    n = Note(freq=466.16, alt='sharp')
+    n = Note(freq=466.16, alt=Note.SHARP)
 
     assert n.name == 'A#'
     assert n.freq == 466.16
     assert n.octave == 4
 
-    n.alt = 'flat'
+    n.alt = Note.FLAT
     assert n.name == 'Bb'
     assert n.freq == 466.16
     assert n.octave == 4
@@ -170,13 +170,13 @@ def test_pitch_shift():
     assert n.freq == 440
     assert n.octave == 4
 
-    n.alt = 'sharp'
-    n.pitch_shift(value=1, half_step=True, alt='flat')
+    n.alt = Note.SHARP
+    n.pitch_shift(value=1, half_step=True, alt=Note.FLAT)
     assert n.name == 'Bb'
     assert n.freq == 466.16
     assert n.octave == 4
 
-    n.pitch_shift(value=0, half_step=True, alt='sharp')
+    n.pitch_shift(value=0, half_step=True, alt=Note.SHARP)
     assert n.name == 'A#'
     assert n.freq == 466.16
     assert n.octave == 4
@@ -200,12 +200,12 @@ def test_pitch_shift():
     assert n.octave == 3
 
     n = Note(freq=466.16)
-    n.pitch_shift(value=1, octave=True, alt='flat')
+    n.pitch_shift(value=1, octave=True, alt=Note.FLAT)
     assert n.name == 'Bb'
     assert n.freq == 932.32
     assert n.octave == 5
 
-    n.pitch_shift(value=-1, octave=True, alt='sharp')
+    n.pitch_shift(value=-1, octave=True, alt=Note.SHARP)
     assert n.name == 'A#'
     assert n.freq == 466.16
     assert n.octave == 4
@@ -225,7 +225,7 @@ def test_pitch_shift():
 
 def test_str():
     assert str(Note(freq=440)) == 'A4'
-    assert str(Note(freq=932.32, alt='flat')) == 'Bb5'
+    assert str(Note(freq=932.32, alt=Note.FLAT)) == 'Bb5'
 
 
 def test_repr():
@@ -235,7 +235,7 @@ def test_repr():
     assert n.octave == 4
     assert n.duration == 4/4
 
-    n = eval(repr(Note(freq=932.32, alt='flat', duration=1/8)))
+    n = eval(repr(Note(freq=932.32, alt=Note.FLAT, duration=1/8)))
     assert n.freq == 932.32
     assert n.name == 'Bb'
     assert n.octave == 5
@@ -255,6 +255,6 @@ def test_value():
 def test_get_note_name_by_index():
     assert Note.get_note_name_by_index(0) == 'C'
     assert Note.get_note_name_by_index(1) == 'C#'
-    assert Note.get_note_name_by_index(1, alt='flat') == 'Db'
+    assert Note.get_note_name_by_index(1, alt=Note.FLAT) == 'Db'
     assert Note.get_note_name_by_index(12) == 'C'
     assert Note.get_note_name_by_index(26) == 'D'

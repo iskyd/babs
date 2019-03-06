@@ -1,7 +1,7 @@
 import pytest
 
 from babs import Note, Chord
-from babs.exceptions import ChordException
+from babs.exceptions import ChordException, NoteListException
 
 
 def test_create():
@@ -27,12 +27,12 @@ def test_create():
     with pytest.raises(ChordException) as exc:
         Chord()
 
-    assert "Chords must have at least two notes, 0 given." == str(exc.value)
+    assert 'Chords must have at least two notes, 0 given.' == str(exc.value)
 
     with pytest.raises(ChordException) as exc:
         Chord(Note(name='C'))
 
-    assert "Chords must have at least two notes, 1 given." == str(exc.value)
+    assert 'Chords must have at least two notes, 1 given.' == str(exc.value)
 
 
 def test_create_not_strict():
@@ -64,272 +64,6 @@ def test_is_valid():
     assert c.is_valid() is True
 
     assert Chord(Note(name='C'), strict=False).is_valid() is False
-
-
-def test_add_note():
-    c = Chord(Note(name='C'), Note(name='E'), Note(name='G'))
-    c.add_note(note=Note(name='B'))
-    assert len(c.notes) == 4
-    assert Note(name='B') in c.notes
-
-    c.add_note(note=Note(name='C'))
-    assert len(c.notes) == 4
-
-    c.add_note(note=Note(name='C', octave=5))
-    assert len(c.notes) == 5
-    assert Note(name='C', octave=5) in c.notes
-
-
-def test_remove_note_by_note():
-    c = Chord(Note(name='C'), Note(name='E'), Note(name='G'), Note(name='C', octave=5))
-    c.remove_note(note=Note(name='C', octave=5))
-
-    assert len(c.notes) == 3
-    assert Note(name='C') in c.notes
-    assert Note(name='G') in c.notes
-    assert Note(name='E') in c.notes
-    assert Note(name='C', octave=5) not in c.notes
-
-    c.remove_note(note=Note(name='E'))
-    assert len(c.notes) == 2
-    assert Note(name='G') in c.notes
-    assert Note(name='C') in c.notes
-    assert Note(name='E') not in c.notes
-
-    with pytest.raises(ChordException) as exc:
-        c.remove_note(note=Note(name='D'))
-
-    assert len(c.notes) == 2
-    assert Note(name='G') in c.notes
-    assert Note(name='C') in c.notes
-    assert "Invalid request. Note not found in Chord." == str(exc.value)
-
-    with pytest.raises(ChordException) as exc:
-        c.remove_note(note=Note(name='C'))
-
-    assert len(c.notes) == 2
-    assert Note(name='G') in c.notes
-    assert Note(name='C') in c.notes
-    assert "Invalid request. Chords must have at least two notes." == str(exc.value)
-
-    with pytest.raises(AttributeError) as exc:
-        c.remove_note(note='a')
-
-    assert "'str' object has no attribute 'freq'" == str(exc.value)
-
-
-def remove_note_by_note_not_strict():
-    c = Chord('a', 'b', strict=False)
-    c.remove_note(note='a', strict=False)
-
-    assert len(c.notes) == 1
-    assert 'b' in c.notes
-    assert 'a' not in c.notes
-
-    c = Chord(Note(name='C'), Note(name='E'))
-    c.remove_note(note=Note(name='C'), strict=False)
-
-    assert len(c.notes) == 1
-    assert Note(name='E') in c.notes
-
-    c.remove_note(name='G', strict=False)
-    assert len(c.notes) == 1
-    assert Note(name='E') in c.notes
-
-
-def test_remove_note_by_freq():
-    c = Chord(Note(name='C'), Note(name='E'), Note(name='G'), Note(name='C', octave=5))
-    c.remove_note(freq=523.25)  # C5
-
-    assert len(c.notes) == 3
-    assert Note(name='C') in c.notes
-    assert Note(name='E') in c.notes
-    assert Note(name='G') in c.notes
-    assert Note(name='C', octave=5) not in c.notes
-
-    c.remove_note(freq=329.63)
-
-    assert len(c.notes) == 2
-    assert Note(name='C') in c.notes
-    assert Note(name='G') in c.notes
-    assert Note(name='E') not in c.notes
-    assert Note(name='C', octave=5) not in c.notes
-
-    with pytest.raises(ChordException) as exc:
-        c.remove_note(freq=261.63)
-
-    assert len(c.notes) == 2
-    assert Note(name='C') in c.notes
-    assert Note(name='G') in c.notes
-    assert "Invalid request. Chords must have at least two notes." == str(exc.value)
-
-    with pytest.raises(ChordException) as exc:
-        c.remove_note(freq='a')
-
-    assert "Invalid request. Note not found in Chord." == str(exc.value)
-
-    c = Chord('a', 'b', strict=False)
-    with pytest.raises(AttributeError) as exc:
-        c.remove_note(freq=261.63)
-
-    assert len(c.notes) == 2
-    assert "'str' object has no attribute 'freq'" == str(exc.value)
-
-
-def remove_note_by_freq_not_strict():
-    c = Chord(Note(name='C'), Note(name='E'))
-    c.remove_note(freq=261.63, strict=False)
-
-    assert len(c.notes) == 1
-    assert Note(name='E') in c.notes
-
-    c.remove_note(freq=440, strict=False)
-    assert len(c.notes) == 1
-    assert Note(name='E') in c.notes
-
-
-def test_remove_note_by_name():
-    c = Chord(Note(name='C'), Note(name='E'), Note(name='G'), Note(name='B'), Note(name='C', octave=5))
-    c.remove_note(name='C')
-
-    assert len(c.notes) == 3
-    assert Note(name='E') in c.notes
-    assert Note(name='G') in c.notes
-    assert Note(name='B') in c.notes
-    assert Note(name='C') not in c.notes
-
-    c.remove_note(name='B')
-    assert len(c.notes) == 2
-    assert Note(name='E') in c.notes
-    assert Note(name='G') in c.notes
-    assert Note(name='B') not in c.notes
-
-    with pytest.raises(ChordException) as exc:
-        c.remove_note(name='E')
-
-    assert len(c.notes) == 2
-    assert Note(name='E') in c.notes
-    assert Note(name='G') in c.notes
-    assert "Invalid request. Chords must have at least two notes." == str(exc.value)
-
-    with pytest.raises(ChordException) as exc:
-        c.remove_note(name='F')
-
-    assert len(c.notes) == 2
-    assert Note(name='E') in c.notes
-    assert Note(name='G') in c.notes
-    assert "Invalid request. Note not found in Chord." == str(exc.value)
-
-
-def test_remove_note_by_name_not_strict():
-    c = Chord(Note(name='C'), Note(name='E'))
-    c.remove_note(name='C', strict=False)
-
-    assert len(c.notes) == 1
-    assert Note(name='E') in c.notes
-
-    c.remove_note(name='G', strict=False)
-    assert len(c.notes) == 1
-    assert Note(name='E') in c.notes
-
-
-def test_remove_note_by_octave():
-    c = Chord(Note(name='B', octave=3), Note(name='C'), Note(name='E'), Note(name='G'), Note(name='C', octave=5))
-    c.remove_note(octave=5)
-
-    assert len(c.notes) == 4
-    assert Note(name='C') in c.notes
-    assert Note(name='E') in c.notes
-    assert Note(name='G') in c.notes
-    assert Note(name='B', octave=3) in c.notes
-    assert Note(name='C', octave=5) not in c.notes
-
-    c.remove_note(octave=3)
-
-    assert len(c.notes) == 3
-    assert Note(name='C') in c.notes
-    assert Note(name='E') in c.notes
-    assert Note(name='G') in c.notes
-    assert Note(name='B', octave=3) not in c.notes
-
-    with pytest.raises(ChordException) as exc:
-        c.remove_note(octave=3)
-
-    assert len(c.notes) == 3
-    assert "Invalid request. Note not found in Chord." == str(exc.value)
-
-    with pytest.raises(ChordException) as exc:
-        c.remove_note(octave=4)
-
-    assert len(c.notes) == 3
-    assert "Invalid request. Chords must have at least two notes." == str(exc.value)
-
-
-def test_remove_note_by_octave_not_strict():
-    c = Chord(Note(name='C'), Note(name='C', octave=5))
-    c.remove_note(octave=4, strict=False)
-
-    assert len(c.notes) == 1
-    assert Note(name='C', octave=5) in c.notes
-
-    c.remove_note(octave=3, strict=False)
-    assert len(c.notes) == 1
-    assert Note(name='C', octave=5) in c.notes
-
-
-def test_remove_note_no_args():
-    with pytest.raises(ChordException) as exc:
-        Chord(Note(name='C'), Note(name='E'), Note(name='G')).remove_note()
-
-    assert "Invalid request. Note not found in Chord." == str(exc.value)
-
-    c = Chord(Note(name='C'), Note(name='E'), Note(name='G'))
-    c.remove_note(strict=False)
-    assert len(c.notes) == 3
-    assert Note(name='C') in c.notes
-    assert Note(name='E') in c.notes
-    assert Note(name='G') in c.notes
-
-
-def test_eq():
-    assert \
-        Chord(Note(name='C'), Note(name='E'), Note(name='G')) == \
-        Chord(Note(name='C'), Note(name='E'), Note(name='G'))
-
-    assert \
-        Chord(Note(name='G'), Note(name='C'), Note(name='E')) == \
-        Chord(Note(name='C'), Note(name='E'), Note(name='G'))
-
-    assert not \
-        Chord(Note(name='G'), Note(name='C'), Note(name='E'), Note(name='C', octave=5)) == \
-        Chord(Note(name='C'), Note(name='E'), Note(name='G'))
-
-
-def test_neq():
-    assert \
-        Chord(Note(name='G'), Note(name='C'), Note(name='E'), Note(name='C', octave=5)) != \
-        Chord(Note(name='C'), Note(name='E'), Note(name='G'))
-
-    assert not \
-        Chord(Note(name='C'), Note(name='E'), Note(name='G')) != \
-        Chord(Note(name='C'), Note(name='E'), Note(name='G'))
-
-    assert not \
-        Chord(Note(name='G'), Note(name='E'), Note(name='C')) != \
-        Chord(Note(name='C'), Note(name='E'), Note(name='G'))
-
-
-def test_str():
-    c = Chord(Note(name='C'), Note(name='E'), Note(name='G'))
-    assert 'C4' in str(c).split(',')
-    assert 'E4' in str(c).split(',')
-    assert 'G4' in str(c).split(',')
-
-    c.add_note(note=Note(name='C', octave=5))
-    assert 'C4' in str(c).split(',')
-    assert 'E4' in str(c).split(',')
-    assert 'G4' in str(c).split(',')
-    assert 'C5' in str(c).split(',')
 
 
 def test_repr():
@@ -505,19 +239,13 @@ def test_create_from_root_with_chord_type():
 
 
 def test_create_from_root_with_alt():
-    c = Chord.create_from_root(root=Note(name='C', alt='sharp'), chord_type=Chord.MINOR_TYPE)
+    c = Chord.create_from_root(root=Note(name='C', alt=Note.SHARP), chord_type=Chord.MINOR_TYPE)
 
-    for n in c.notes:
-        assert n.alt == 'sharp'
-        if n == Note(name='D#'):
-            assert str(n) == 'D#4'
+    assert 'D#4' in str(c).split(',')
 
-    c = Chord.create_from_root(root=Note(name='C', alt='flat'), chord_type=Chord.MINOR_TYPE, alt='flat')
+    c = Chord.create_from_root(root=Note(name='C', alt=Note.FLAT), chord_type=Chord.MINOR_TYPE, alt=Note.FLAT)
 
-    for n in c.notes:
-        assert n.alt == 'flat'
-        if n == Note(name='Eb'):
-            assert str(n) == 'Eb4'
+    assert 'Eb4' in str(c).split(',')
 
 
 def test_create_from_root_with_from_root_octave():
