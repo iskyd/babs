@@ -9,18 +9,23 @@ from babs.exceptions import NoteListException
 
 class NoteList(ABC):
     OCTAVE_TYPE_ROOT = 'root'
+    OCTAVE_TYPE_FROM_ROOT = 'from_root'
 
-    def __init__(self, *notes):
+    def __init__(self, *notes, **kwargs):
         """
         :param notes: list of notes
         """
-        self._notes = list(set(notes))
+        self._notes = list(notes)
+        self.strict = kwargs.pop('strict', True)
+
+        if self.strict is True and not self.is_valid():
+            raise NoteListException('Invalid notes given.')
     
     def __eq__(self, other):
-        return set(self._notes) == set(other.notes)
+        return self._notes == other.notes
 
     def __ne__(self, other):
-        return set(self._notes) != set(other.notes)
+        return self._notes != other.notes
     
     def __str__(self):
         return ','.join(list(map(lambda n: str(n), self._notes)))
@@ -32,25 +37,40 @@ class NoteList(ABC):
     def notes(self):
         return self._notes
 
-    def add_note(self, note):
+    def is_valid(self):
         """
-        Add note to chord
-        :param note: note to be added in chord
-        :param strict: raise ChordException if note is not valid
+        Check if list is valid
+        :return: bool
+        """
+        if len(self._notes) < 1:
+            return False
+        
+        for n in self._notes:
+            if not isinstance(n, Note):
+                return False
+
+        return True
+
+    def add_note(self, note, strict=True):
+        """
+        Add note to list
+        :param note: note to be added in list
+        :param strict: raise NoteException if note is not valid, not found or if chord will be invalid
         :return: None
         """
-
-        if note not in self._notes:
-            self._notes.append(note)
+        if strict and not isinstance(note, Note):
+            raise NoteListException('Invalid note given.')
+        
+        self._notes.append(note)
     
     def remove_note(self, note=None, freq=None, name=None, octave=None, strict=True):
         """
-        Remove note by note, freq, name or octave from chord
+        Remove note by note, freq, name or octave from list
         :param note: note to remove
         :param freq: frequency to remove
         :param name: name to remove
         :param octave: octave to remove
-        :param strict: raise ChordException if note is not valid, not found or if chord will be invalid
+        :param strict: raise NoteException if note is not valid, not found or if chord will be invalid
         :return: None
         """
 
@@ -65,13 +85,13 @@ class NoteList(ABC):
             indices = [key for key, n in enumerate(self._notes) if n.octave == octave]
 
         if strict is True and len(indices) == 0:
-            raise NoteListException('Invalid request. Note not found in Chord.')
-
-        if strict is True and len(self._notes) - len(indices) < 2:
-            raise NoteListException('Invalid request. Chords must have at least two notes.')
+            raise NoteListException('Invalid request. Note not found in list.')
 
         if len(indices) > 0:
             self._notes = [n for key, n in enumerate(self._notes) if key not in indices]
+
+        if strict is True and not self.is_valid():
+            raise NoteListException('Invalid notes.')
     
     @classmethod
     def get_notes_from_root(cls, root, note_list_type=None, octave=None, alt=Note.SHARP):
@@ -100,9 +120,9 @@ class NoteList(ABC):
                 return octave(root.octave, i, distance)
             elif isinstance(octave, int):
                 return octave
-            elif octave == 'root':
+            elif octave == cls.OCTAVE_TYPE_ROOT:
                 return root.octave
-            elif octave == 'from_root':
+            elif octave == cls.OCTAVE_TYPE_FROM_ROOT:
                 return root.octave + int(distance / len(Note.NOTES))
             else:
                 return Note.A_DEFAULT_OCTAVE
@@ -113,7 +133,7 @@ class NoteList(ABC):
             alt=alt
         ) for i, distance in enumerate(note_list_type)]
 
-        notes.append(root)
+        notes.insert(0, root)
         
         return notes
         
