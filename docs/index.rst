@@ -9,6 +9,7 @@ Contents:
     installation
     note
     rest
+    note_list 
     chord
     authors
 
