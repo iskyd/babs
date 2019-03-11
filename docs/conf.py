@@ -150,6 +150,6 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'babs', 'babs Documentation',
-     author, 'babs', 'One line description of project.',
+     author, 'babs', 'Music Library.',
      'Miscellaneous'),
 ]
