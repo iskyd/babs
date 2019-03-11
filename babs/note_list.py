@@ -31,7 +31,7 @@ class NoteList(ABC):
         return ','.join(list(map(lambda n: str(n), self._notes)))
 
     def __repr__(self):
-        return '{}({})'.format(type(self).__name__, ','.join(list(map(lambda n: repr(n), self._notes))))
+        return '{}({}, strict={})'.format(type(self).__name__, ','.join(list(map(lambda n: repr(n), self._notes))), self.strict)
 
     @property
     def notes(self):

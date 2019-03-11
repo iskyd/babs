@@ -42,6 +42,16 @@ def test_create():
         pytest.fail("Unexpected NoteListException")
 
 
+def test_order_notes():
+    m = Mock(Note(name='C'), Note(name='D'))
+    assert m.notes[0] == Note(name='C')
+    assert m.notes[1] == Note(name='D')
+
+    m = Mock(Note(name='E'), Note(name='D', octave=3), strict=True)
+    assert m.notes[0] == Note(name='E')
+    assert m.notes[1] == Note(name='D', octave=3)
+
+
 def test_eq():
     assert \
         Mock(Note(name='C'), Note(name='D'), Note(name='C')) == \
@@ -94,12 +104,31 @@ def test_str():
 def test_repr():
     m = eval(repr(Mock(Note(name='C'), Note(name='D'), Note(name='E'))))
     assert m == Mock(Note(name='C'), Note(name='D'), Note(name='E'))
+    assert m.notes[0] == Note(name='C')
+    assert m.notes[1] == Note(name='D')
+    assert m.notes[2] == Note(name='E')
 
     m = eval(repr(Mock(Note(name='A'), Note(name='Bb'), Note(name='C', octave=3))))
     assert m == Mock(Note(name='A'), Note(name='Bb'), Note(name='C', octave=3))
+    assert m.notes[0] == Note(name='A')
+    assert m.notes[1] == Note(name='Bb')
+    assert m.notes[2] == Note(name='C', octave=3)
 
     m = eval(repr(Mock(Note(name='C'), Note(name='G'), Note(name='C'), Note(name='C', octave=5))))
     assert m == Mock(Note(name='C'), Note(name='G'), Note(name='C'), Note(name='C', octave=5))
+    assert m.notes[0] == Note(name='C')
+    assert m.notes[1] == Note(name='G')
+    assert m.notes[2] == Note(name='C')
+    assert m.notes[3] == Note(name='C', octave=5)
+
+    m = eval(repr(Mock(Note(name='C'), Note(name='D'), strict=True)))
+    assert m.strict is True
+
+    m = eval(repr(Mock(Note(name='C'), Note(name='D'), strict=False)))
+    assert m.strict is False
+
+
+
 
 
 def test_is_valid():
