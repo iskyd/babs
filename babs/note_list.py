@@ -1,6 +1,4 @@
-import abc
-
-ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()}) #compatible with python 2 and 3
+from abc import ABC
 
 from babs import Note
 
