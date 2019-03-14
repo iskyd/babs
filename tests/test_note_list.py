@@ -1,6 +1,7 @@
 import pytest
 
 from babs import NoteList, Note
+
 from babs.exceptions import NoteListException
 
 class Mock(NoteList):
@@ -22,24 +23,24 @@ def test_create():
     with pytest.raises(NoteListException) as exc:
         Mock('invalid')
     
-    assert 'Invalid notes given.' == str(exc.value)
+    assert 'Invalid Mock.' == str(exc.value)
 
     with pytest.raises(NoteListException) as exc:
         Mock(Note(name='C'), 'invalid')
     
-    assert 'Invalid notes given.' == str(exc.value)
+    assert 'Invalid Mock.' == str(exc.value)
 
     with pytest.raises(NoteListException) as exc:
         Mock()
     
-    assert 'Invalid notes given.' == str(exc.value)
+    assert 'Invalid Mock.' == str(exc.value)
 
     try:
         Mock(Note(name='C'), 'invalid', strict=False)
         Mock('invalid', strict=False)
         Mock(strict=False)
     except NoteListException:
-        pytest.fail("Unexpected NoteListException")
+        pytest.fail('Unexpected NoteListException')
 
 
 def test_order_notes():
@@ -50,6 +51,11 @@ def test_order_notes():
     m = Mock(Note(name='E'), Note(name='D', octave=3), strict=True)
     assert m.notes[0] == Note(name='E')
     assert m.notes[1] == Note(name='D', octave=3)
+
+    m = Mock(Note(name='E'), Note(name='D', octave=3), Note(name='E'), strict=True)
+    assert m.notes[0] == Note(name='E')
+    assert m.notes[1] == Note(name='D', octave=3)
+    assert m.notes[2] == Note(name='E')
 
 
 def test_eq():
@@ -191,23 +197,18 @@ def test_remove_note_by_note():
     assert Note(name='C') in m.notes
     assert Note(name='E') not in m.notes
 
-    with pytest.raises(NoteListException) as exc:
-        m.remove_note(note=Note(name='D'))
-
-    assert len(m.notes) == 2
-    assert Note(name='G') in m.notes
-    assert Note(name='C') in m.notes
-    assert 'Invalid request. Note not found in list.' == str(exc.value)
-
     with pytest.raises(AttributeError) as exc:
         m.remove_note(note='a')
 
     assert "'str' object has no attribute 'freq'" == str(exc.value)
 
+    m = Mock(Note(name='C'))
     with pytest.raises(NoteListException) as exc:
-        Mock(Note(name='C')).remove_note(note=Note(name='C'))
+       m.remove_note(note=Note(name='C'))
 
-    assert 'Invalid notes.' == str(exc.value)
+    assert 'Invalid Mock.' == str(exc.value)
+    assert len(m.notes) == 1
+    assert Note(name='C') in m.notes
 
 
 def remove_note_by_note_not_strict():
@@ -229,9 +230,12 @@ def remove_note_by_note_not_strict():
     assert Note(name='E') in m.notes
 
     try:
-        Mock(Note(name='C')).remove_note(note=Note(name='C'), strict=False)
+        m = Mock(Note(name='C'))
+        m.remove_note(note=Note(name='C'), strict=False)
     except:
-        pytest.fail("Unexpected NoteListException")
+        pytest.fail('Unexpected NoteListException')
+
+    assert len(m) == 0
 
 
 def test_remove_note_by_freq():
@@ -252,11 +256,6 @@ def test_remove_note_by_freq():
     assert Note(name='E') not in m.notes
     assert Note(name='C', octave=5) not in m.notes
 
-    with pytest.raises(NoteListException) as exc:
-        m.remove_note(freq=250)
-
-    assert 'Invalid request. Note not found in list.' == str(exc.value)
-
     m = Mock('a', 'b', strict=False)
     with pytest.raises(AttributeError) as exc:
         m.remove_note(freq=261.63)
@@ -264,10 +263,13 @@ def test_remove_note_by_freq():
     assert len(m.notes) == 2
     assert "'str' object has no attribute 'freq'" == str(exc.value)
 
+    m = Mock(Note(name='A'))
     with pytest.raises(NoteListException) as exc:
-        Mock(Note(name='A')).remove_note(freq=440)
+        m.remove_note(freq=440)
 
-    assert 'Invalid notes.' == str(exc.value)
+    assert 'Invalid Mock.' == str(exc.value)
+    assert len(m.notes) == 1
+    assert Note(name='A') in m.notes
 
 
 def test_remove_note_by_freq_not_strict():
@@ -282,10 +284,12 @@ def test_remove_note_by_freq_not_strict():
     assert Note(name='E') in m.notes
 
     try:
-        Mock(Note(freq=440)).remove_note(freq=440, strict=False)
+        m = Mock(Note(freq=440))
+        m.remove_note(freq=440, strict=False)
     except:
-        pytest.fail("Unexpected NoteListException")
+        pytest.fail('Unexpected NoteListException')
 
+    assert len(m.notes) == 0
 
 def test_remove_note_by_name():
     m = Mock(Note(name='C'), Note(name='E'), Note(name='G'), Note(name='B'), Note(name='C', octave=5))
@@ -303,18 +307,13 @@ def test_remove_note_by_name():
     assert Note(name='G') in m.notes
     assert Note(name='B') not in m.notes
 
+    m = Mock(Note(name='A'))
     with pytest.raises(NoteListException) as exc:
-        m.remove_note(name='F')
+        m.remove_note(name='A')
 
-    assert len(m.notes) == 2
-    assert Note(name='E') in m.notes
-    assert Note(name='G') in m.notes
-    assert 'Invalid request. Note not found in list.' == str(exc.value)
-
-    with pytest.raises(NoteListException) as exc:
-        Mock(Note(name='A')).remove_note(name='A')
-
-    assert 'Invalid notes.' == str(exc.value)
+    assert 'Invalid Mock.' == str(exc.value)
+    assert len(m.notes) == 1
+    assert Note(name='A') in m.notes
 
 
 def test_remove_note_by_name_not_strict():
@@ -329,9 +328,12 @@ def test_remove_note_by_name_not_strict():
     assert Note(name='E') in m.notes
 
     try:
-        Mock(Note(name='A')).remove_note(name='A', strict=False)
+        m = Mock(Note(name='A'))
+        m.remove_note(name='A', strict=False)
     except:
-        pytest.fail("Unexpected NoteListException")
+        pytest.fail('Unexpected NoteListException')
+
+    assert len(m.notes) == 0
 
 
 def test_remove_note_by_octave():
@@ -353,16 +355,14 @@ def test_remove_note_by_octave():
     assert Note(name='G') in m.notes
     assert Note(name='B', octave=3) not in m.notes
 
+    m = Mock(Note(name='A'), Note(name='B'))
     with pytest.raises(NoteListException) as exc:
-        m.remove_note(octave=3)
+        m.remove_note(octave=4)
 
-    assert len(m.notes) == 3
-    assert 'Invalid request. Note not found in list.' == str(exc.value)
-
-    with pytest.raises(NoteListException) as exc:
-        Mock(Note(name='A'), Note(name='B')).remove_note(octave=4)
-
-    assert 'Invalid notes.' == str(exc.value)
+    assert 'Invalid Mock.' == str(exc.value)
+    assert len(m.notes) == 2
+    assert Note(name='A') in m.notes
+    assert Note(name='B') in m.notes
 
 
 def test_remove_note_by_octave_not_strict():
@@ -377,23 +377,12 @@ def test_remove_note_by_octave_not_strict():
     assert Note(name='C', octave=5) in m.notes
 
     try:
-        Mock(Note(name='A'), Note(name='B')).remove_note(octave=4, strict=False)
+        m = Mock(Note(name='A'), Note(name='B'))
+        m.remove_note(octave=4, strict=False)
     except:
-        pytest.fail("Unexpected NoteListException")
+        pytest.fail('Unexpected NoteListException')
 
-
-def test_remove_note_no_args():
-    with pytest.raises(NoteListException) as exc:
-        Mock(Note(name='C'), Note(name='E'), Note(name='G')).remove_note()
-
-    assert 'Invalid request. Note not found in list.' == str(exc.value)
-
-    m = Mock(Note(name='C'), Note(name='E'), Note(name='G'))
-    m.remove_note(strict=False)
-    assert len(m.notes) == 3
-    assert Note(name='C') in m.notes
-    assert Note(name='E') in m.notes
-    assert Note(name='G') in m.notes
+    assert len(m.notes) == 0
 
 
 def test_get_notes_from_root():

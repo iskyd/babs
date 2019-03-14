@@ -35,15 +35,12 @@ class Chord(NoteList):
         :param kwargs: options [strict]
         """
 
-        self.strict = kwargs.pop('strict', True)
-        if self.strict is True:
-            if len(notes) < 2:
-                raise ChordException('Chords must have at least two notes, {} given.'.format(len(notes)))
+        super().__init__(*notes, strict=kwargs.pop('strict', True), invalid_exception=ChordException)
+        self._order()
 
-        self._notes = list(set(notes))
-
-    def __repr__(self):
-        return 'Chord({}, strict={})'.format(','.join(list(map(lambda n: repr(n), self._notes))), self.strict)
+    def _order(self):
+        if self.is_valid():
+            self._notes.sort(key=lambda note: note.freq, reverse=False)
 
     def is_valid(self):
         """
@@ -51,14 +48,27 @@ class Chord(NoteList):
         :return: bool
         """
 
+        if not super().is_valid():
+            return False
+
         if len(self._notes) < 2:
             return False
 
-        for n in self._notes:
-            if not isinstance(n, Note):
-                return False
-
         return True
+    
+    def add_note(self, note, strict=True):
+        """
+        Add note to list
+        :param note: note to be added in list
+        :param strict: raise NoteException if note is not valid, not found or if chord will be invalid
+        :return: None
+        """
+        super().add_note(note=note, strict=strict)
+        self._order()
+
+    def remove_note(self, note=None, freq=None, name=None, octave=None, strict=True):
+        super().remove_note(note=note, freq=freq, name=name, octave=octave, strict=strict)
+        self._order()
 
     @classmethod
     def create_from_root(cls, root, chord_type=None, octave=NoteList.OCTAVE_TYPE_ROOT, alt=Note.SHARP):

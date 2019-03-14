@@ -156,22 +156,17 @@ You can remove a note by Note(), name, frequency or octave.
     # C4
     # E4
 
-By default, as before, strict is set to True, so if a Note is not found
-or if the list will have less the one note after remove
-you will have a NoteListException.
+By default, as before, strict is set to True, so if the list will be invalid after remove you will have a NoteListException.
+If a NoteListException is raised the notes in the list will be restored as they were before the remove.
 
 .. code-block:: python
 
     m = Mock(Note(name='C'))
-    m.remove_note(note=Note(name='G'))
-    # NoteListException: Invalid request. Note not found in list.
-
-    print(len(m.notes))  # 2
 
     m.remove_note(note=Note(name='C'))
-    # Invalid notes.
+    # Invalid Mock.
 
-    print(len(c.notes))  # 0
+    print(len(c.notes))  # 1
 
 
 Removing a Note by octave or name can remove multiple notes.

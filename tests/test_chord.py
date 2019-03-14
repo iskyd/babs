@@ -1,7 +1,8 @@
 import pytest
 
 from babs import Note, Chord
-from babs.exceptions import ChordException, NoteListException
+
+from babs.exceptions import ChordException
 
 
 def test_create():
@@ -15,7 +16,7 @@ def test_create():
     assert Note(name='C') in c.notes
     assert Note(name='E') in c.notes
     assert Note(name='G') in c.notes
-    assert len(c.notes) == 3
+    assert len(c.notes) == 4
 
     c = Chord(Note(name='C'), Note(name='E'), Note(name='G'), Note(name='C', octave=5))
     assert Note(name='C') in c.notes
@@ -27,22 +28,56 @@ def test_create():
     with pytest.raises(ChordException) as exc:
         Chord()
 
-    assert 'Chords must have at least two notes, 0 given.' == str(exc.value)
+    assert 'Invalid Chord.' == str(exc.value)
 
     with pytest.raises(ChordException) as exc:
         Chord(Note(name='C'))
 
-    assert 'Chords must have at least two notes, 1 given.' == str(exc.value)
+    assert 'Invalid Chord.' == str(exc.value)
+
+    with pytest.raises(ChordException) as exc:
+        Chord('invalid')
+
+    assert 'Invalid Chord.' == str(exc.value)
+
+    with pytest.raises(ChordException) as exc:
+        Chord('invalid', 'invalid')
+
+    assert 'Invalid Chord.' == str(exc.value)
+
+def test_order_notes():
+    c = Chord(Note(name='C'), Note(name='E'))
+    assert c.notes[0] == Note(name='C')
+    assert c.notes[1] == Note(name='E')
+
+    c = Chord(Note(name='C'), Note(name='E', octave=3), strict=True)
+    assert c.notes[0] == Note(name='E', octave=3)
+    assert c.notes[1] == Note(name='C')
+
+    c = Chord(Note(name='C'), Note(name='E'), Note(name='G'), strict=True)
+    assert c.notes[0] == Note(name='C')
+    assert c.notes[1] == Note(name='E')
+    assert c.notes[2] == Note(name='G')
+
+    c = Chord(Note(name='A', octave=3), Note(name='F'), Note(name='C', octave=3), Note(name='E', octave=2), Note(name='E'))
+    assert c.notes[0] == Note(name='E', octave=2)
+    assert c.notes[1] == Note(name='C', octave=3)
+    assert c.notes[2] == Note(name='A', octave=3)
+    assert c.notes[3] == Note(name='E')
+    assert c.notes[4] == Note(name='F')
 
 
 def test_create_not_strict():
-    assert len(Chord(strict=False).notes) == 0
-    assert len(Chord(Note(name='C'), strict=False).notes) == 1
+    try:
+        assert len(Chord(strict=False).notes) == 0
+        assert len(Chord(Note(name='C'), strict=False).notes) == 1
 
-    c = Chord('a', 'b', strict=False)
-    assert len(c.notes) == 2
-    assert 'a' in c.notes
-    assert 'b' in c.notes
+        c = Chord('a', 'b', strict=False)
+        assert len(c.notes) == 2
+        assert 'a' in c.notes
+        assert 'b' in c.notes
+    except ChordException:
+        pytest.fail("Unexpected ChordException")
 
 
 def test_set_notes_attribute():
@@ -299,3 +334,76 @@ def test_create_from_root_with_invalid_octave():
     assert Note(name='C', octave=4) in c.notes
     assert Note(name='E', octave=4) in c.notes
     assert Note(name='G', octave=4) in c.notes
+
+
+def test_add_note_order():
+    c = Chord(Note(name='C'), Note(name='E'), Note(name='G'))
+    c.add_note(note=Note(name='Bb'))
+    assert len(c.notes) == 4
+    assert c.notes[0] == Note(name='C')
+    assert c.notes[1] == Note(name='E')
+    assert c.notes[2] == Note(name='G')
+    assert c.notes[3] == Note(name='Bb')
+    
+    c = Chord(Note(name='C'), Note(name='E'), Note(name='G'))
+    c.add_note(note=Note(name='C', octave=3))
+    assert len(c.notes) == 4
+    assert c.notes[0] == Note(name='C', octave=3)
+    assert c.notes[1] == Note(name='C')
+    assert c.notes[2] == Note(name='E')
+    assert c.notes[3] == Note(name='G')
+
+    c = Chord(Note(name='C'), Note(name='E'), Note(name='G'))
+    c.add_note(note=Note(name='C', octave=3))
+    c.add_note(note=Note(name='G', octave=3))
+    assert len(c.notes) == 5
+    assert c.notes[0] == Note(name='C', octave=3)
+    assert c.notes[1] == Note(name='G', octave=3)
+    assert c.notes[2] == Note(name='C')
+    assert c.notes[3] == Note(name='E')
+    assert c.notes[4] == Note(name='G')
+
+
+def test_add_note_strict():
+    with pytest.raises(ChordException) as exc:
+        Chord(Note(name='C'), Note(name='E'), Note(name='G')).add_note(note='invalid')
+    
+    assert 'Invalid note given.' == str(exc.value)
+
+    with pytest.raises(ChordException) as exc:
+        Chord(strict=False).add_note(note='invalid')
+
+    assert 'Invalid note given.' == str(exc.value)
+
+def test_add_note_strict_false():
+    try:
+        Chord(Note(name='C'), Note(name='E'), Note(name='G')).add_note(note='invalid', strict=False)
+        Chord(strict=False).add_note(note='invalid', strict=False)
+    except ChordException:
+        pytest.fail('Unexpected ChordException')
+
+
+def test_remove_note_strict():
+    with pytest.raises(AttributeError) as exc:
+        Chord(Note(name='C'), Note(name='E'), Note(name='G')).remove_note(note='invalid')
+    
+    assert "'str' object has no attribute 'freq'" == str(exc.value)
+
+    with pytest.raises(ChordException) as exc:
+        Chord(strict=False).remove_note(note='invalid')
+
+    assert 'Invalid Chord.' == str(exc.value)
+
+
+def test_remove_note_strict_false():
+    try:
+        Chord(Note(name='C'), Note(name='E'), Note(name='G')).remove_note(note=Note(name='G'), strict=False)
+        Chord(Note(name='C'), Note(name='E'), Note(name='G')).remove_note(octave=3, strict=False)
+        Chord(Note(name='C'), Note(name='E'), Note(name='G')).remove_note(freq=12, strict=False)
+    except ChordException:
+        pytest.fail('Unexpected ChordException')
+
+    with pytest.raises(AttributeError) as exc:
+        Chord(Note(name='C'), Note(name='E'), Note(name='G')).remove_note(note='invalid', strict=False)
+    
+    assert "'str' object has no attribute 'freq'" == str(exc.value)

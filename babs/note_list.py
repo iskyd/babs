@@ -17,9 +17,10 @@ class NoteList(ABC):
         """
         self._notes = list(notes)
         self.strict = kwargs.pop('strict', True)
+        self.invalid_exception = kwargs.pop('invalid_exception', NoteListException)
 
-        if self.strict is True and not self.is_valid():
-            raise NoteListException('Invalid notes given.')
+        if self.strict is True and self.is_valid() is False:
+            raise self.invalid_exception('Invalid {}.'.format(type(self).__name__))
     
     def __eq__(self, other):
         return self._notes == other.notes
@@ -59,7 +60,7 @@ class NoteList(ABC):
         :return: None
         """
         if strict and not isinstance(note, Note):
-            raise NoteListException('Invalid note given.')
+            raise self.invalid_exception('Invalid note given.')
         
         self._notes.append(note)
     
@@ -74,6 +75,8 @@ class NoteList(ABC):
         :return: None
         """
 
+        notes = self._notes
+
         indices = []
         if note is not None:
             indices = [key for key, n in enumerate(self._notes) if n == note]
@@ -84,14 +87,12 @@ class NoteList(ABC):
         elif octave is not None:
             indices = [key for key, n in enumerate(self._notes) if n.octave == octave]
 
-        if strict is True and len(indices) == 0:
-            raise NoteListException('Invalid request. Note not found in list.')
-
         if len(indices) > 0:
             self._notes = [n for key, n in enumerate(self._notes) if key not in indices]
 
         if strict is True and not self.is_valid():
-            raise NoteListException('Invalid notes.')
+            self._notes = notes
+            raise self.invalid_exception('Invalid {}.'.format(type(self).__name__))
     
     @classmethod
     def get_notes_from_root(cls, root, note_list_type=None, octave=None, alt=Note.SHARP):
