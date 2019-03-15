@@ -60,13 +60,22 @@ class Chord(NoteList):
         """
         Add note to list
         :param note: note to be added in list
-        :param strict: raise NoteException if note is not valid, not found or if chord will be invalid
+        :param strict: raise ChordException if note is not valid or if chord will be invalid
         :return: None
         """
         super().add_note(note=note, strict=strict)
         self._order()
 
     def remove_note(self, note=None, freq=None, name=None, octave=None, strict=True):
+        """
+        Remove note by note, freq, name or octave from list
+        :param note: note to remove
+        :param freq: frequency to remove
+        :param name: name to remove
+        :param octave: octave to remove
+        :param strict: raise ChordException if note is not valid, not found or if chord will be invalid after remove
+        :return: None
+        """
         super().remove_note(note=note, freq=freq, name=name, octave=octave, strict=strict)
         self._order()
 
