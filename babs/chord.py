@@ -71,7 +71,7 @@ class Chord(NoteList):
         self._order()
 
     @classmethod
-    def create_from_root(cls, root, chord_type=None, octave=NoteList.OCTAVE_TYPE_ROOT, alt=Note.SHARP):
+    def create_from_root(cls, root, chord_type=None, octave=NoteList.OCTAVE_TYPE_ROOT, alt=Note.SHARP, strict=True):
         """
         :param root: root note
         :param chord_type: a list of notes distance from root note
@@ -90,5 +90,6 @@ class Chord(NoteList):
         notes = NoteList.get_notes_from_root(root=root, note_list_type=chord_type, octave=octave, alt=alt)
 
         return cls(
-            *notes
+            *notes,
+            strict=strict
         )

@@ -122,6 +122,10 @@ def test_create_from_root():
     assert Note(name='B', octave=3) in c.notes
     assert Note(name='D', octave=3) in c.notes
 
+    assert Chord.create_from_root(root=Note(name='C')).strict is True
+    assert Chord.create_from_root(root=Note(name='C'), strict=True).strict is True
+    assert Chord.create_from_root(root=Note(name='C'), strict=False).strict is False
+
 
 def test_create_from_root_with_chord_type():
     c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MAJOR_TYPE)
