@@ -54,7 +54,7 @@ class NoteList(ABC):
         """
         Add note to list
         :param note: note to be added in list
-        :param strict: raise NoteException if note is not valid, not found or if chord will be invalid
+        :param strict: raise NoteListException if note is not valid
         :return: None
         """
         if strict and not isinstance(note, Note):
@@ -69,7 +69,7 @@ class NoteList(ABC):
         :param freq: frequency to remove
         :param name: name to remove
         :param octave: octave to remove
-        :param strict: raise NoteException if note is not valid, not found or if chord will be invalid
+        :param strict: raise NoteListException if note is not valid, not found or if list will be invalid after remove
         :return: None
         """
 
