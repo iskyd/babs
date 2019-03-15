@@ -373,7 +373,39 @@ def test_add_note_strict_false():
         pytest.fail('Unexpected ChordException')
 
 
+def test_remove_note():
+    c = Chord.create_from_root(root=Note(name='C'))
+    c.remove_note(note=Note(name='E'))
+    assert len(c.notes) == 2 
+    assert c.notes[0] == Note(name='C')
+    assert c.notes[1] == Note(name='G')
+
+    c = Chord.create_from_root(root=Note(name='C'), chord_type=Chord.MINOR_TYPE)
+    c.remove_note(note=Note(name='Eb'))
+    assert len(c.notes) == 2 
+    assert c.notes[0] == Note(name='C')
+    assert c.notes[1] == Note(name='G')
+
+
 def test_remove_note_strict():
+    c = Chord(Note(name='C'), Note(name='D'))
+    with pytest.raises(ChordException) as exc:
+        c.remove_note(note=Note(name='D'))
+    
+    assert len(c.notes) == 2
+    assert c.notes[0] == Note(name='C')
+    assert c.notes[1] == Note(name='D')
+    assert 'Invalid Chord.' == str(exc.value)
+
+    c = Chord(Note(name='C'), Note(name='E'))
+    with pytest.raises(ChordException) as exc:
+        c.remove_note(note=Note(name='C'))
+    
+    assert len(c.notes) == 2
+    assert c.notes[0] == Note(name='C')
+    assert c.notes[1] == Note(name='E')
+    assert 'Invalid Chord.' == str(exc.value)
+
     with pytest.raises(AttributeError) as exc:
         Chord(Note(name='C'), Note(name='E'), Note(name='G')).remove_note(note='invalid')
     
@@ -386,9 +418,20 @@ def test_remove_note_strict():
 
 
 def test_remove_note_strict_false():
+    c = Chord(Note(name='C'), Note(name='D'))
+    c.remove_note(note=Note(name='D'), strict=False)
+    assert len(c.notes) == 1
+    assert c.notes[0] == Note(name='C')
+
+    c = Chord(Note(name='C'), Note(name='E'))
+    c.remove_note(note=Note(name='C'), strict=False)
+    assert len(c.notes) == 1
+    assert c.notes[0] == Note(name='E')
+
     try:
-        Chord(Note(name='C'), Note(name='E'), Note(name='G')).remove_note(note=Note(name='G'), strict=False)
+        Chord(Note(name='C'), Note(name='E'), Note(name='G')).remove_note(note=Note(name='A'), strict=False)
         Chord(Note(name='C'), Note(name='E'), Note(name='G')).remove_note(octave=3, strict=False)
+        Chord(Note(name='C'), Note(name='E'), Note(name='G')).remove_note(octave=4, strict=False)
         Chord(Note(name='C'), Note(name='E'), Note(name='G')).remove_note(freq=12, strict=False)
     except ChordException:
         pytest.fail('Unexpected ChordException')
