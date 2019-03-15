@@ -101,20 +101,6 @@ def test_is_valid():
     assert Chord(Note(name='C'), strict=False).is_valid() is False
 
 
-def test_repr():
-    c = eval(repr(Chord(Note(name='C'), Note(name='E'), Note(name='G'))))
-    assert c == Chord(Note(name='C'), Note(name='E'), Note(name='G'))
-    assert c.strict is True
-
-    c = eval(repr(Chord(
-        Note(name='C'),
-        strict=False
-    )))
-
-    assert c == Chord(Note(name='C'), strict=False)
-    assert c.strict is False
-
-
 def test_create_from_root():
     c = Chord.create_from_root(root=Note(name='C'))
 
