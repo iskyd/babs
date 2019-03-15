@@ -134,9 +134,6 @@ def test_repr():
     assert m.strict is False
 
 
-
-
-
 def test_is_valid():
     assert Mock(strict=False).is_valid() is False
     assert Mock(Note(name='C'), strict=False).is_valid() is True
