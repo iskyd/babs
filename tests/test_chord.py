@@ -407,3 +407,28 @@ def test_remove_note_strict_false():
         Chord(Note(name='C'), Note(name='E'), Note(name='G')).remove_note(note='invalid', strict=False)
     
     assert "'str' object has no attribute 'freq'" == str(exc.value)
+
+
+def test_str():
+    c = Chord(Note(name='C'), Note(name='E'), Note(name='G'))
+    assert 'C4,E4,G4' == str(c)
+
+    c.add_note(note=Note(name='C', octave=5))
+    assert 'C4,E4,G4,C5' == str(c)
+
+
+def test_repr():
+    c = eval(repr(Chord(Note(name='C'), Note(name='E'), Note(name='G'))))
+    assert c == Chord(Note(name='C'), Note(name='E'), Note(name='G'))
+
+    c = eval(repr(Chord(Note(name='A', octave=3), Note(name='C'), Note(name='E'))))
+    assert c == Chord(Note(name='A', octave=3), Note(name='C'), Note(name='E'))
+
+    c = eval(repr(Chord(Note(name='C'), Note(name='G'), Note(name='C'), Note(name='C', octave=5))))
+    assert c == Chord(Note(name='C'), Note(name='G'), Note(name='C'), Note(name='C', octave=5))
+
+    c = eval(repr(Chord(Note(name='C'), Note(name='E'), strict=True)))
+    assert c.strict is True
+
+    c = eval(repr(Chord(Note(name='C'), Note(name='E'), strict=False)))
+    assert c.strict is False
