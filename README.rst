@@ -18,19 +18,19 @@ Overview
     * - coverage
       - | |coverage|
 
-.. |docs| image:: https://readthedocs.org/projects/babs/badge/?version=dev
-    :target: https://babs.readthedocs.io/en/dev/?badge=latest
+.. |docs| image:: https://readthedocs.org/projects/babs/badge/?version=latest
+    :target: https://babs.readthedocs.io/en/latest/
     :alt: Documentation Status
 
-.. |travis| image:: https://travis-ci.org/iskyd/babs.svg?branch=dev
+.. |travis| image:: https://travis-ci.org/iskyd/babs.svg?branch=master
     :alt: Travis-CI Build Status
     :target: https://travis-ci.org/iskyd/babs
 
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/iskyd/babs?branch=dev&svg=true
+.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/iskyd/babs?branch=master&svg=true
     :alt: AppVeyor Build Status
     :target: https://ci.appveyor.com/project/iskyd/babs
 
-.. |coverage| image:: https://codecov.io/gh/iskyd/babs/branch/dev/graph/badge.svg
+.. |coverage| image:: https://codecov.io/gh/iskyd/babs/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/iskyd/babs
 
 +---------------------------+
@@ -46,4 +46,4 @@ Overview
 
 Links
 ======================================
-    * Documentation: https://babs.readthedocs.io/en/dev/
+    * Documentation: https://babs.readthedocs.io/en/latest/
