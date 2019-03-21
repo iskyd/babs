@@ -36,7 +36,7 @@ Now you have create the C chord and you can access to the notes attribute.
     # G4
 
 Chord is an ordered list of notes from lower to higher.
-So the order in which you pass the notes in the constructor is not relevand, the list will always be from lower note (lower frequency)
+So the order in which you pass the notes in the constructor is not relevant, the list will always be from lower note (lower frequency)
 to the higher note (higher frequency).
 
 .. code-block:: python
@@ -74,7 +74,7 @@ As we said a Chord consists of two or more note. So what happen if we create a o
 ChordException (Invalid Chord.)
 You can disable is_valid() control passing strict=False.
 In this way you will also disable the ordering, because order() works with Note object (using the attribute freq of the note)
-and will throw AttributeError if the object is not a valid Note.
+and will raise AttributeError if the object is not a valid Note.
 
 .. code-block:: python
 
@@ -82,11 +82,11 @@ and will throw AttributeError if the object is not a valid Note.
     print(len(c.notes))  # 1
 
 
-If you set strict to False you also disable Note check so this will be valid.
+If you set strict to False you also disable Note check so this will not raise an exception.
 
 .. code-block:: python
 
-    c = Chord('a', 'b', 'c')
+    c = Chord('a', 'b', 'c', strict=False)
     print(len(c.notes))  # 3
 
 
@@ -188,7 +188,7 @@ This method use the remove_note() method of NoteList abstract class but re-order
 
 By default, as before, strict is set to True, so if the Chord will be invalid after remove
 you will have a ChordException.
-If a ChordException is raised the notes in the chord will be restored as they were before the remove.
+If ChordException is raised the notes in the chord will be restored as they were before the remove.
 
 .. code-block:: python
 
