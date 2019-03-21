@@ -13,6 +13,20 @@ class Scale(NoteList):
 
     MAJOR_TYPE = [2, 4, 5, 7, 9, 11]
     MINOR_TYPE = [2, 3, 5, 7, 8, 10]
+    IONIAN_TYPE = MAJOR_TYPE
+    DORIAN_TYPE = [2, 3, 5, 7, 9, 10]
+    PHRIGIAN_TYPE = [1, 3, 5, 7, 8, 10]
+    LIDYAN_TYPE = [2, 4, 6, 7, 9, 11]
+    DOMINANT_TYPE = [2, 4, 5, 7, 9, 10]
+    AEOLIAN_TYPE = MINOR_TYPE
+    LOCRIAN_TYPE = [1, 3, 5, 6, 8, 10]
+    PENTATONIC_TYPE = [2, 4, 7, 9]
+    PENTATONIC_MINOR_TYPE = [3, 5, 7, 10]
+    BLUES_TYPE = [2, 3, 4, 7, 9]
+    BLUES_MINOR_TYPE = [3, 5, 6, 7, 10]
+    MELODIC_MINOR_TYPE = [2, 3, 5, 7, 9, 11]
+    HARMONIC_MINOR_TYPE = [2, 3, 5, 7, 8, 11]
+    HARMONIC_MAJOR_TYPE = [2, 4, 5, 7, 8, 11]
 
     def __init__(self, *notes, **kwargs):
         """

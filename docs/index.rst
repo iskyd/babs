@@ -11,6 +11,7 @@ Contents:
     rest
     note_list 
     chord
+    scale
     authors
 
 

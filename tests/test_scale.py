@@ -129,6 +129,56 @@ def test_create_from_root():
     assert Scale.create_from_root(root=Note(name='C'), strict=False).strict is False
 
 
+def test_create_from_root_with_scale_type():
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.MAJOR_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='D'), Note(name='E'), Note(name='F'), Note(name='G'), Note(name='A'), Note(name='B'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.MINOR_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='D'), Note(name='Eb'), Note(name='F'), Note(name='G'), Note(name='Ab'), Note(name='Bb'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.IONIAN_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='D'), Note(name='E'), Note(name='F'), Note(name='G'), Note(name='A'), Note(name='B'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.DORIAN_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='D'), Note(name='Eb'), Note(name='F'), Note(name='G'), Note(name='A'), Note(name='Bb'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.PHRIGIAN_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='Db'), Note(name='Eb'), Note(name='F'), Note(name='G'), Note(name='Ab'), Note(name='Bb'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.LIDYAN_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='D'), Note(name='E'), Note(name='F#'), Note(name='G'), Note(name='A'), Note(name='B'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.DOMINANT_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='D'), Note(name='E'), Note(name='F'), Note(name='G'), Note(name='A'), Note(name='Bb'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.AEOLIAN_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='D'), Note(name='Eb'), Note(name='F'), Note(name='G'), Note(name='Ab'), Note(name='Bb'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.LOCRIAN_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='Db'), Note(name='Eb'), Note(name='F'), Note(name='Gb'), Note(name='Ab'), Note(name='Bb'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.PENTATONIC_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='D'), Note(name='E'), Note(name='G'), Note(name='A'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.PENTATONIC_MINOR_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='Eb'), Note(name='F'), Note(name='G'), Note(name='Bb'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.BLUES_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='D'), Note(name='Eb'), Note(name='E'), Note(name='G'), Note(name='A'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.BLUES_MINOR_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='Eb'), Note(name='F'), Note(name='Gb'), Note(name='G'), Note(name='Bb'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.MELODIC_MINOR_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='D'), Note(name='Eb'), Note(name='F'), Note(name='G'), Note(name='A'), Note(name='B'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.HARMONIC_MINOR_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='D'), Note(name='Eb'), Note(name='F'), Note(name='G'), Note(name='Ab'), Note(name='B'))
+
+    s = Scale.create_from_root(root=Note(name='C'), scale_type=Scale.HARMONIC_MAJOR_TYPE)
+    assert s == Scale(Note(name='C'), Note(name='D'), Note(name='E'), Note(name='F'), Note(name='G'), Note(name='Ab'), Note(name='B'))
+
+
 def test_create_from_root_with_from_root_octave():
     s = Scale.create_from_root(root=Note(name='C', octave=3), scale_type=Scale.MINOR_TYPE, alt=Note.FLAT, octave=NoteList.OCTAVE_TYPE_FROM_ROOT)
     assert s.notes[0] == Note(name='C', octave=3)
