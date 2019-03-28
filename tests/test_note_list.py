@@ -391,6 +391,7 @@ def test_remove_note_none():
     m.remove_note()
     assert len(m.notes) == 3
 
+
 def test_get_notes_from_root():
     notes = Mock.get_notes_from_root(root=Note(name='C'), note_list_type=[3, 5, 7, 10])
     assert Note(name='C') in notes
