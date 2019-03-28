@@ -382,6 +382,15 @@ def test_remove_note_by_octave_not_strict():
     assert len(m.notes) == 0
 
 
+def test_remove_note_none():
+    m = Mock(Note(name='C'), Note(name='C', octave=5))
+    m.remove_note()
+    assert len(m.notes) == 2
+
+    m = Mock(Note(name='C'), Note(name='D'), Note(name='E'))
+    m.remove_note()
+    assert len(m.notes) == 3
+
 def test_get_notes_from_root():
     notes = Mock.get_notes_from_root(root=Note(name='C'), note_list_type=[3, 5, 7, 10])
     assert Note(name='C') in notes
