@@ -2,17 +2,18 @@ from __future__ import division
 
 import math
 
+from babs import Interval
 from babs.exceptions import NoteException
 
 
-class Note(object):
+class Note(Interval):
     """
     Musical note: the pitch and the duration of a sound
     """
 
     A_FREQUENCY = 440
     A_DEFAULT_OCTAVE = 4
-    NOTES = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B']
+    NOTES = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B/Cb']
     HALF_STEP_INTERVAL = 2 ** (1 / 12)
     FLAT = 'flat'
     SHARP = 'sharp'

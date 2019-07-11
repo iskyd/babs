@@ -1,9 +1,12 @@
 from __future__ import division
 
+from babs import Interval
 
-class Rest:
+
+class Rest(Interval):
     """
     Interval of silence
+    Note without a sound
     """
 
     def __init__(self, duration=4/4):
